@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Liste des énigmes</title>
+  </head>
+  <body>
+    {% if not authorized %}
+      <form method="POST">
+        <label for="password">Mot de passe :</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Entrer</button>
+      </form>
+    {% else %}
+      <h1>Liste des énigmes</h1>
+      <table>
+        <tr>
+          <th>Énigme</th>
+          <th>Niveau de difficulté</th>
+        </tr>
+        {% for enigma, level in enigmas.items() %}
+          <tr>
+            <td>{{ enigma }}</td>
+            <td>{{ level }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% endif %}
+  </body>
+</html>
