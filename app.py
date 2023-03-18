@@ -3,6 +3,8 @@ from flask import Flask, request, render_template, redirect, flash
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
+# Instanciation of a
+
 # array of enigmas
 enigmas = {
     "Enigme 1 : Je mets mes dents entre tes dents! Qui suis-je ?": "fourchette",
@@ -62,33 +64,3 @@ def enigma():
                                enigma=sequenceOfEnigma[currentEnigma],
                                hint=hints[sequenceOfEnigma[currentEnigma]])
 
-@app.route('/liste', methods=['GET', 'POST'])
-def liste():
-    if request.method == 'POST':
-        password = request.form['password']
-        if password == myPassword:
-            # Dictionary mapping each enigma to its level
-            levels = {
-                "Enigme 1 : Je mets mes dents entre tes dents! Qui suis-je ?": "Facile",
-                "Enigme 2 : Si tu me perds, tu tombes": "Moyen",
-                "Enigme 3 : Même en marchant vers lui, vous ne pourrez jamais l'atteindre": "Difficile",
-                "Enigme 4": "Difficile"
-            }
-
-            return render_template('liste.html', enigmas=enigmas, levels=levels)
-        else:
-            return render_template('password.html')
-    else:
-        return render_template('password.html')
-
-@app.route('/password', methods=['GET', 'POST'])
-def password():
-    if request.method == 'POST':
-        entered_password = request.form['password']
-        if entered_password == myPassword:
-            return redirect('/liste')
-        else:
-            flash('Mauvais mot de passe')
-            return render_template('password.html')
-    else:
-        return render_template('password.html')
