@@ -1,74 +1,129 @@
-body{
-    background-color: antiquewhite;
-    text-align: center;
-    font-family: fantasy;
-}
-
-.button-submit {
-  margin: auto;
-  padding: 15px 30px;
-  text-align: center;
-  text-transform: uppercase;
-  transition: 0.5s;
-  background-size: 200% auto;
-  color: white;
-  border-radius: 10px;
-  display: block;
-  border: 0px;
-  font-weight: 700;
-  box-shadow: 0px 0px 14px -7px #f09819;
-  background-image: linear-gradient(45deg, #FF512F 0%, #F09819  51%, #FF512F  100%);
-  cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-}
-
-.button-submit:hover {
-  background-position: right center;
-  /* change the direction of the change here */
-  color: #fff;
-  text-decoration: none;
-}
-
-.button-submit:active {
-  transform: scale(0.95);
-}
-
-.button-hint {
-  background-color: #fff000;
-  margin-top : 20px;
-  width: 200px;
-  border-radius: 12px;
-  color: orangered;
-  cursor: pointer;
-  font-weight: bold;
-  padding: 10px 15px;
-  text-align: center;
-  transition: 200ms;
+/* Reset some default browser styles */
+* {
   box-sizing: border-box;
-  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Set some global styles */
+body {
+  font-family: Arial, sans-serif;
   font-size: 16px;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
+  line-height: 1.5;
+  background-color: #5f6774;
+  color: #333;
 }
 
-.button-hint:not(:disabled):hover,
-.button-hint:not(:disabled):focus {
-  outline: 0;
-  background: #f4e603;
-  box-shadow: 0 0 0 2px rgba(0,0,0,.2), 0 3px 8px 0 rgba(0,0,0,.15);
+header {
+  padding: 20px;
+  background-color: blanchedalmond;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.button-hint:disabled {
-  filter: saturate(0.2) opacity(0.5);
-  -webkit-filter: saturate(0.2) opacity(0.5);
-  cursor: not-allowed;
+.logo{
+  display: flex;
+  justify-content: center;
 }
 
-input {
-  font-family: Arial;
-  padding: 0.2em 0.5em;
+.logo img {
+  width: 15%;
+  max-width: 200px;
+}
+
+.menu{
+  height: 35px;
+  display: flex;
+  margin: 30px 0 0 0;
+  padding: 10px 0 10px 0;
+  justify-content: center;
+  font-family: system-ui;
+}
+
+.menu ul {
+  display: flex;
+  list-style: none;
+}
+
+.menu-play{
+  margin-right: 20px;
+}
+
+.menu-list-of-enigma{
+  margin-right: 30px;
+}
+
+.menu a {
+  text-decoration: none;
+  color: #5f6774;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.menu a:hover {
+  color: lightslategrey;
+}
+
+.login{
+  margin-left: 10px;
+}
+
+.login a {
+  text-decoration: none;
+  color: #5f6774;
+}
+
+
+main {
+  padding: 40px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
+  color: blanchedalmond;
+}
+
+h1{
+  margin-bottom: 10px;
+}
+
+.play-button{
+  background-color: transparent;
+  border: 2px solid blanchedalmond;
+  margin-top: 30px;
+  color: blanchedalmond;
+  font-size : 24px;
+  padding: 10px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  position: relative;
+}
+
+.play-button::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  border-radius: 28px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  z-index: -1;
+}
+
+.play-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.play-button a{
+  text-decoration: None;
+  color: inherit;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }

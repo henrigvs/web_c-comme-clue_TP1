@@ -1,0 +1,14 @@
+{% extends "main.html" %}
+
+{% block body %}
+  <h1>Enigma Game</h1>
+  <div>
+    <p id="enigma-description"></p>
+    <p><strong>Hint:</strong> <span id="enigma-hint"></span></p>
+  </div>
+  <div>
+    <input type="text" id="answer" placeholder="Your answer"/>
+    <button id="check-answer-button">Check Answer</button>
+  </div>
+  <script src="game.js"></script>
+{% endblock %}
