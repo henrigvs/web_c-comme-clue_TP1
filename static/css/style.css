@@ -25,8 +25,7 @@ header {
   justify-content: center;
 }
 
-.logo img {
-  width: 15%;
+.logo a img {
   max-width: 200px;
 }
 
@@ -83,10 +82,6 @@ main {
   color: blanchedalmond;
 }
 
-h1{
-  margin-bottom: 10px;
-}
-
 .play-button{
   background-color: transparent;
   border: 2px solid blanchedalmond;
@@ -119,6 +114,89 @@ h1{
 .play-button a{
   text-decoration: None;
   color: inherit;
+}
+
+h1{
+  margin-bottom: 10px;
+}
+
+.btn {
+  box-sizing: border-box;
+  appearance: none;
+  background-color: blanchedalmond;
+  border: 2px solid blanchedalmond;
+  border-radius: 0.6em;
+  cursor: pointer;
+  display: flex;
+  align-self: center;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1;
+  margin: 20px;
+  padding: 1.2em 2.8em;
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #5f6774;
+}
+
+.btn:hover{
+  background: linear-gradient(45deg, blanchedalmond 0, transparent 100%);
+  transition: background 300ms ease-in-out;
+  color: blanchedalmond;
+}
+
+
+.answer-form{
+  margin-top: 20px;
+}
+
+.answer-input{
+  text-align: center;
+  border-radius: 0.6em;
+  padding: 5px 0 5px 0;
+  border: 2px solid blanchedalmond;
+  background-color: transparent;
+  color: blanchedalmond;
+}
+
+/* Custom styles for the 'Cool' button */
+.swal2-confirm.button-cool {
+  box-sizing: border-box;
+  appearance: none;
+  background-color: blanchedalmond;
+  border: 2px solid blanchedalmond;
+  border-radius: 0.6em;
+  cursor: pointer;
+  display: flex;
+  align-self: center;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1;
+  margin: 20px;
+  padding: 10px 20px;
+  text-decoration: none;
+  text-align: center;
+  font-weight: 700;
+  color: #5f6774;
+}
+
+.swal2-confirm.button-cool:hover{
+  background: linear-gradient(45deg, blanchedalmond 0, transparent 100%);
+  transition: background 300ms ease-in-out;
+  color: blanchedalmond;
+}
+
+/* Custom styles for the SweetAlert popup title and text */
+.swal2-popup.popup .swal2-title,
+.swal2-popup.popup .swal2-content {
+  color: blanchedalmond;
+}
+
+/* Custom styles for the SweetAlert popup background */
+.swal2-popup.popup {
+  background-color: #5f6774;
 }
 
 footer {

@@ -1,17 +1,23 @@
 {% extends "main.html" %}
 
 {% block body %}
-  <h1>Enigma number {{ current_enigma }}</h1>
+  <h1>Enigma n° {{ current_enigma }}</h1>
   <div>
-    <p id="enigma-description">{{ enigma }}</p>
-    <p><strong>Hint:</strong> <span id="hint"> {{ hint }}</span></p>
+    <h2 id="enigma-description">{{ enigma }}</h2>
+    {% if not_correct == True %}
+    <h3 id="not-correct">The answer isn't correct, try again</h3>
+    {% endif %}
   </div>
   <div>
-    <form method="POST">
-      <input type="text" id="answer" name="answer" placeholder="Your answer"/>
-      <button id="check-answer-button" type="submit" value="answer">Check Answer</button>
+    <form autocomplete="off" class="answer-form" method="POST">
+      <input class="answer-input" type="text" id="answer" name="answer" placeholder="Your answer"/>
+      <button class="btn" id="check-answer-button" type="submit" value="answer">Check Answer</button>
     </form>
 
   </div>
-  <script src="game.js"></script>
+  <div>
+    <button id="sweetalert" class="btn" hint="{{ hint }}">Get an hint</button>
+  </div>
+
+
 {% endblock %}
