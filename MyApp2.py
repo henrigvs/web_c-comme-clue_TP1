@@ -28,7 +28,7 @@ sequenceOfEnigma = ["Enigme 1 : Je mets mes dents entre tes dents! Qui suis-je ?
                     "Enigme 4"]
 
 # index of current enigma
-currentEnigma = 0
+pointer = 0
 
 # password for accessing the secret page
 myPassword = "secret"
@@ -36,7 +36,7 @@ myPassword = "secret"
 
 @app.route('/', methods=['GET', 'POST'])
 def enigma():
-    global currentEnigma
+    global pointer
     if request.method == 'POST':
         # User submits an answer
         answer = request.form['answer']
