@@ -1,14 +1,17 @@
 {% extends "main.html" %}
 
 {% block body %}
-  <h1>Enigma Game</h1>
+  <h1>Enigma number {{ current_enigma }}</h1>
   <div>
-    <p id="enigma-description"></p>
-    <p><strong>Hint:</strong> <span id="enigma-hint"></span></p>
+    <p id="enigma-description">{{ enigma }}</p>
+    <p><strong>Hint:</strong> <span id="hint"> {{ hint }}</span></p>
   </div>
   <div>
-    <input type="text" id="answer" placeholder="Your answer"/>
-    <button id="check-answer-button">Check Answer</button>
+    <form method="POST">
+      <input type="text" id="answer" name="answer" placeholder="Your answer"/>
+      <button id="check-answer-button" type="submit" value="answer">Check Answer</button>
+    </form>
+
   </div>
   <script src="game.js"></script>
 {% endblock %}

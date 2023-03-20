@@ -25,7 +25,13 @@ def game():
             session['current_enigma'] = enigmas[currentEnigma-1]
             return redirect(url_for('game.game'))
         else:
-            return render_template('enigmas/game.html', enigma=session['current_enigma'])
+            return render_template('enigmas/game.html', enigma=session['current_enigma']
+                                   , hint=session['current_enigma']['hint']
+                                   , solution=session['current_enigma']['solution'])
     else:
         session['current_enigma'] = enigmas[currentEnigma-1]
-        return render_template('enigmas/game.html', enigma=session['current_enigma']['description'])
+        return render_template('enigmas/game.html'
+                               , current_enigma=currentEnigma
+                               , enigma=session['current_enigma']['description']
+                               , hint=session['current_enigma']['hint']
+                               , solution=session['current_enigma']['solution'])
