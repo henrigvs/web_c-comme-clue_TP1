@@ -6,9 +6,9 @@ class EnigmaMapper:
 
     @staticmethod
     def toDTO(enigma):
-        return EnigmaDTO(enigma.description, enigma.solution, enigma.hint)
+        return EnigmaDTO(enigma.description, enigma.solution, enigma.hint, enigma.difficulty)
 
     @staticmethod
     def toEntity(enigmaDTO):
-        return Enigma(enigmaDTO.description, enigmaDTO.solution, enigmaDTO.hint)
+        return Enigma(enigmaDTO.description, enigmaDTO.solution, enigmaDTO.hint, enigmaDTO.difficulty)
 

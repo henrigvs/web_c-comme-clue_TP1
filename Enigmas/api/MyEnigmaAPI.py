@@ -9,10 +9,14 @@ enigmaService = EnigmaService(enigmaRepository)
 enigmaController = EnigmaController(enigmaService)
 
 # Initializing some Enigmas
-enigmaController.addEnigma("Qu'est-ce qui est jaune et qui attend", "jonathan", "pas d'indice")
-enigmaController.addEnigma("Je mets mes dents entre tes dents", "fourchette", "Je suis un couvert de table")
+enigmaController.addEnigma("Qu'est-ce qui est jaune et qui attend", "jonathan", "pas d'indice", 0)
+enigmaController.addEnigma("Je mets mes dents entre tes dents", "fourchette", "Je suis un couvert de table", 1)
 enigmaController.addEnigma("Même en marchant vers lui, vous ne pourrez jamais l'atteindre", "horizon",
-                           "On peut me voir à la plage")
+                           "On peut me voir à la plage", 1)
+enigmaController.addEnigma("Qu'est-ce qui est jaune et qui attend", "jonathan", "pas d'indice", 0)
+enigmaController.addEnigma("Je mets mes dents entre tes dents", "fourchette", "Je suis un couvert de table", 1)
+enigmaController.addEnigma("Même en marchant vers lui, vous ne pourrez jamais l'atteindre", "horizon",
+                           "On peut me voir à la plage", 1)
 
 
 @enigmaBP.route('/', methods=['POST'])

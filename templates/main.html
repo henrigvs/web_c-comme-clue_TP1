@@ -16,7 +16,7 @@
         <div class="menu">
           <ul>
             <li class="menu-play"><a href="/game">Play</a></li>
-            <li class="menu-list-of-enigma"><a href="#">Enigmas</a></li>
+            <li class="menu-list-of-enigma"><a href="/list">Enigmas</a></li>
           </ul>
           <div class="login">
             <a href="#">Log In</a>
@@ -30,8 +30,12 @@
     </main>
 
     <footer>
+      {% block footer %}
+      {% endblock %}
+
         <p>&copy; 2023 Escape Game. All rights reserved.</p>
     </footer>
     <script src="/static/js/game.js"></script>
+    <script src="/static/js/list.js"></script>
   </body>
 </html>

@@ -1,0 +1,46 @@
+{% extends "main.html" %}
+
+{% block body %}
+
+<h1>Enigmas List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th style="padding-right: 50px">Description</th>
+                <th style="padding-right: 30px">Solution</th>
+                <th>Hint</th>
+                <th>Difficulty</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for enigma in enigmas %}
+                <tr>
+                    <td style="text-align: left; padding-right: 50px">{{ enigma.description }}</td>
+                    <td style="text-align: left; padding-right: 50px">{{ enigma.solution }}</td>
+                    <td><button id="sweetalert" class="btn-list" hint="{{ enigma.hint }}">show hint</button></td>
+                    <td>{{ enigma.difficulty }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block footer %}
+    <div class="pagination">
+        {% if currentPage > 1 %}
+            <a href="{{ url_for('list.list', page=currentPage-1) }}">&laquo; Previous</a>
+        {% endif %}
+        {% for page in range(1, totalPages+1) %}
+            {% if page == currentPage %}
+                <span>{{ page }}</span>
+            {% else %}
+                <a href="{{ url_for('list.list', page=page) }}">{{ page }}</a>
+            {% endif %}
+        {% endfor %}
+        {% if currentPage < totalPages %}
+            <a href="{{ url_for('list.list', page=currentPage+1) }}">Next &raquo;</a>
+        {% endif %}
+    </div>
+{% endblock %}
+
+

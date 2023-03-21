@@ -1,23 +1,22 @@
-from flask import Blueprint, request, session, render_template, redirect, url_for, session
+from flask import Blueprint, request, render_template, session
 import requests
-from game.JSONConverter import JSONConverter
+from application.static_methods.JSONConverter import JSONConverter
 
 gameBP = Blueprint('game', __name__)
 pointer = 1
 
 def getEnigmasJSON():
     enigmas_response = requests.get("http://localhost:5000/enigmas/")
-    enigmas = JSONConverter.getEnigmasFromJSON(enigmas_response.json())
-    session['enigmas'] = enigmas
+    enigmas = JSONConverter.convertJSONToEnigmaArray(enigmas_response.json())
     return enigmas
 
 def getNextEnigma(notCorrect):
     return render_template('enigmas/game.html'
                            , notCorrect=notCorrect
                            , current_enigma=pointer
-                           , enigma=session['current_enigma']['description']
-                           , hint=session['current_enigma']['hint']
-                           , solution=session['current_enigma']['solution'])
+                           , enigma=session['currentEnigma']['description']
+                           , hint=session['currentEnigma']['hint']
+                           , solution=session['currentEnigma']['solution'])
 
 
 @gameBP.route('/', methods=['GET', 'POST'])

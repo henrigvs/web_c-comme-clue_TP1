@@ -74,7 +74,7 @@ header {
 
 main {
   padding: 40px;
-  height: 400px;
+  min-height: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -147,6 +147,32 @@ h1{
   color: blanchedalmond;
 }
 
+.btn-list {
+  box-sizing: border-box;
+  appearance: none;
+  background-color: blanchedalmond;
+  border: 2px solid blanchedalmond;
+  border-radius: 0.6em;
+  cursor: pointer;
+  display: flex;
+  align-self: center;
+  font-size: 0.6rem;
+  font-weight: 400;
+  line-height: 1;
+  margin: 20px;
+  padding: 1.2em 2.8em;
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #5f6774;
+}
+
+.btn-list:hover{
+  background: linear-gradient(45deg, blanchedalmond 0, transparent 100%);
+  transition: background 300ms ease-in-out;
+  color: blanchedalmond;
+}
 
 .answer-form{
   margin-top: 20px;
@@ -201,7 +227,31 @@ h1{
 
 footer {
   text-align: center;
+  color: #5f6774;
   padding: 20px;
-  background-color: #fff;
+  background-color: blanchedalmond;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.pagination{
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.pagination a{
+  color: #5f6774;
+  margin: 0 5px;
+  text-decoration: none;
+  font-weight: normal;
+}
+
+.pagination a:hover{
+  color: #5f6774;
+}
+
+.pagination span{
+  color: #5f6774;
+  margin: 0 5px
 }
