@@ -1,4 +1,5 @@
-from Enigmas.api.dtos.EnigmaDTO import EnigmaDTO
+from Enigmas.api.service.dtos.CreateEnigmaDTO import CreateEnigmaDTO
+from Enigmas.api.service.dtos.EnigmaDTO import EnigmaDTO
 
 
 class EnigmaController:
@@ -9,30 +10,40 @@ class EnigmaController:
     # POST
 
     def addEnigma(self, description, solution, hint, difficulty):
-        enigmaDTO = EnigmaDTO(description, solution, hint, difficulty)
-        self.enigmaService.addEnigma(enigmaDTO)
+        createEnigmaDTO = CreateEnigmaDTO(description, solution, hint, difficulty)
+        self.enigmaService.addEnigma(createEnigmaDTO)
 
+    # PUT
 
+    def updateEnigma(self, id, description, solution, hint, difficulty):
+        enigmaDTO = EnigmaDTO(id, description, solution, hint, difficulty)
+        self.enigmaService.updateEnigma(enigmaDTO)
+
+    # DELETE
+    def deleteEnigma(self, id):
+        self.enigmaService.deleteEnigma(id)
 
     # GET
 
     def getAllEnigmas(self):
         enigmas = self.enigmaService.getAllEnigmas()
-        return [
-            {
-                'description': enigma.description,
-                'solution': enigma.solution,
-                'hint': enigma.hint,
-                'difficulty': enigma.difficulty
-            }
-                for enigma in enigmas]
+        json = []
+        for enigma in enigmas:
+            json.append({
+                    'id': str(enigma.id),
+                    'description': enigma.description,
+                    'solution': enigma.solution,
+                    'hint': enigma.hint,
+                    'difficulty': enigma.difficulty
+                    })
+        return json
 
     def getEnigmaById(self, id):
         enigma = self.enigmaService.getEnigmaByID(id)
-        return \
-            {
+        return {
+                'id': enigma.id,
                 'description': enigma.description,
                 'solution': enigma.solution,
                 'hint': enigma.hint,
                 'difficulty': enigma.difficulty
-            }
+                }

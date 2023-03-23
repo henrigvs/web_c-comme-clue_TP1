@@ -6,17 +6,25 @@ class EnigmaRepository:
         self.enigmas = {}
 
     def addEnigma(self, enigma):
-        size = len(self.enigmas)
-        self.enigmas[size + 1] = enigma
+        id = enigma.id
+        self.enigmas[id] = enigma
+
+    def updateEnigma(self, enigma, id):
+        if id in self.enigmas:
+            self.enigmas[id] = enigma
 
     def getAllEnigmas(self):
         return self.enigmas.values()
 
-    def getEnigmaByID(self, myKey):
-        if myKey in self.enigmas:
-            return self.enigmas[myKey]
+    def getEnigmaByID(self, id):
+        if id in self.enigmas:
+            return self.enigmas[id]
         else:
             return None
+
+    def deleteEnigma(self, id):
+        if id in self.enigmas:
+            self.enigmas.pop(id)
 
     def __repr__(self) -> str:
         stringBuilder = ""

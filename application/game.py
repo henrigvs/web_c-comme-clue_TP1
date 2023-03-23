@@ -5,10 +5,12 @@ from application.static_methods.JSONConverter import JSONConverter
 gameBP = Blueprint('game', __name__)
 pointer = 1
 
+
 def getEnigmasJSON():
     enigmas_response = requests.get("http://localhost:5000/enigmas/")
     enigmas = JSONConverter.convertJSONToEnigmaArray(enigmas_response.json())
     return enigmas
+
 
 def getNextEnigma(notCorrect):
     return render_template('enigmas/game.html'
@@ -30,7 +32,7 @@ def game():
         if answer == enigma['solution'].lower():
             pointer += 1
 
-            if pointer-1 >= len(enigmas):
+            if pointer - 1 >= len(enigmas):
                 pointer = 1
                 return render_template("enigmas/game_completed.html")
 

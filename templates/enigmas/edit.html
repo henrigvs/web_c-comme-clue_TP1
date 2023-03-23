@@ -1,0 +1,34 @@
+{% extends "main.html" %}
+
+{% block body %}
+    <h1>Edit Enigma</h1>
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+    <form action="{{ url_for('edit.updateEnigma', id=enigma.id) }}" method="post" style="display: flex; flex-direction: column;">
+        <p class="attribute">Description</p>
+        <input class="new-value" type="text" id="description" name="description" value="{{ enigma.description }}" required>
+
+        <p class="attribute">Solution</p>
+        <input class="new-value" type="text" id="solution" name="solution" value="{{ enigma.solution }}" required>
+
+        <p class="attribute">Hint</p>
+        <input class="new-value" type="text" id="hint" name="hint" value="{{ enigma.hint }}" required>
+
+        <p class="attribute">Difficulty Level</p>
+        <div class="custom-number-input">
+            <button class="btn-edit left" type="button" onclick="decrement()">-</button>
+            <input class="new-value-difficulty" type="number" id="difficulty" name="difficulty" min="0" max="5" value="{{ enigma.difficulty }}" required>
+            <button class="btn-edit right" type="button" onclick="increment()">+</button>
+        </div>
+
+        <div style="display: flex; justify-content: center; margin-top: 1rem;">
+            <button class="btn-confirmation-edit" type="submit">Edit</button>
+        </div>
+    </form>
+        <div>
+        <form action="{{ url_for('edit.deleteEnigma', id=enigma.id) }}" method="post">
+            <button class="btn-confirmation-delete" type="submit">Delete</button>
+        </form>
+        </div>
+{% endblock %}

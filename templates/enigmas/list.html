@@ -6,6 +6,7 @@
     <table>
         <thead>
             <tr>
+                <th style="padding-right: 50px">ID</th>
                 <th style="padding-right: 50px">Description</th>
                 <th style="padding-right: 30px">Solution</th>
                 <th>Hint</th>
@@ -15,10 +16,14 @@
         <tbody>
             {% for enigma in enigmas %}
                 <tr>
+                    <td style="text-align: left; padding-right: 50px">{{ enigma.id }}</td>
                     <td style="text-align: left; padding-right: 50px">{{ enigma.description }}</td>
                     <td style="text-align: left; padding-right: 50px">{{ enigma.solution }}</td>
                     <td><button id="sweetalert" class="btn-list" hint="{{ enigma.hint }}">show hint</button></td>
                     <td>{{ enigma.difficulty }}</td>
+                    <td>
+                        <button class="btn-modify" onclick="location.href='/edit/{{ enigma.id }}'">Modify</button>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

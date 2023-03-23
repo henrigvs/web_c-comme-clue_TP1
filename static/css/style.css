@@ -174,6 +174,33 @@ h1{
   color: blanchedalmond;
 }
 
+.btn-modify{
+  box-sizing: border-box;
+  appearance: none;
+  background-color: blanchedalmond;
+  border: 2px solid blanchedalmond;
+  border-radius: 0.6em;
+  cursor: pointer;
+  display: flex;
+  align-self: center;
+  font-size: 0.6rem;
+  font-weight: 400;
+  line-height: 1;
+  margin: 20px;
+  padding: 1.2em 2.8em;
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #5f6774;
+}
+
+.btn-modify:hover{
+  background: linear-gradient(45deg, blanchedalmond 0, transparent 100%);
+  transition: background 300ms ease-in-out;
+  color: blanchedalmond;
+}
+
 .answer-form{
   margin-top: 20px;
 }
@@ -184,6 +211,114 @@ h1{
   padding: 5px 0 5px 0;
   border: 2px solid blanchedalmond;
   background-color: transparent;
+  color: blanchedalmond;
+}
+
+.new-value{
+  text-align: center;
+  border-radius: 0.6em;
+  padding: 5px 0 5px 0;
+  border: 2px solid blanchedalmond;
+  background-color: transparent;
+  color: blanchedalmond;
+  width: 600px;
+}
+
+.new-value-difficulty{
+  text-align: center;
+  border-radius: 0.6em;
+  padding: 5px 0 5px 0;
+  border: 2px solid blanchedalmond;
+  background-color: transparent;
+  color: blanchedalmond;
+  width: 100px;
+}
+
+.custom-number-input {
+  display: flex;
+  justify-content: center;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  padding: 0;
+  cursor: pointer;
+}
+
+.attribute{
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+
+.btn-edit{
+  box-sizing: border-box;
+  appearance: none;
+  background-color: blanchedalmond;
+  border: 2px solid blanchedalmond;
+  border-radius: 0.6em;
+  cursor: pointer;
+  display: flex;
+  align-self: center;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1;
+  margin: 20px;
+  padding: 10px;
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #5f6774;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.btn-confirmation-edit{
+  box-sizing: border-box;
+  appearance: none;
+  background-color: blanchedalmond;
+  border: 2px solid blanchedalmond;
+  border-radius: 0.6em;
+  cursor: pointer;
+  display: flex;
+  align-self: center;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1;
+  margin: 20px;
+  padding: 10px;
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #5f6774;
+}
+
+.btn-confirmation-delete{
+  box-sizing: border-box;
+  appearance: none;
+  background-color: orangered;
+  border: 2px solid blanchedalmond;
+  border-radius: 0.6em;
+  cursor: pointer;
+  display: flex;
+  align-self: center;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1;
+  margin: 20px;
+  padding: 10px;
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 700;
   color: blanchedalmond;
 }
 
@@ -254,4 +389,9 @@ footer {
 .pagination span{
   color: #5f6774;
   margin: 0 5px
+}
+
+.custom-number-input {
+  display: flex;
+  align-items: center;
 }
