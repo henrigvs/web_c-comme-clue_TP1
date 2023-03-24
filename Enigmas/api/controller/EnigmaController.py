@@ -17,7 +17,7 @@ class EnigmaController:
 
     def updateEnigma(self, id, description, solution, hint, difficulty):
         enigmaDTO = EnigmaDTO(id, description, solution, hint, difficulty)
-        self.enigmaService.updateEnigma(enigmaDTO)
+        self.enigmaService.updateEnigma(enigmaDTO, id)
 
     # DELETE
     def deleteEnigma(self, id):

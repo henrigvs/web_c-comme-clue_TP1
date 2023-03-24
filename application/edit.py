@@ -21,7 +21,7 @@ def editEnigma(id):
                            , enigma=enigma)
 
 
-@editBP.route('/update/<id>', methods=['POST'])
+@editBP.route('/<id>', methods=['POST'])
 def updateEnigma(id):
     description = request.form['description']
     solution = request.form['solution']
@@ -47,7 +47,7 @@ def updateEnigma(id):
     return render_template('enigmas/edit.html', error_message=errorMessage, enigma=data)
 
 
-@editBP.route('/delete/<id>', methods=['POST'])
+@editBP.route('/<id>', methods=['DELETE'])
 def deleteEnigma(id):
     try:
         response = requests.delete(f'{apiUrl}/{id}')

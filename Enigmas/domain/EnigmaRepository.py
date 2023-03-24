@@ -11,7 +11,10 @@ class EnigmaRepository:
 
     def updateEnigma(self, enigma, id):
         if id in self.enigmas:
-            self.enigmas[id] = enigma
+            self.enigmas[id].description = enigma.description
+            self.enigmas[id].solution = enigma.solution
+            self.enigmas[id].hint = enigma.hint
+            self.enigmas[id].difficulty = enigma.difficulty
 
     def getAllEnigmas(self):
         return self.enigmas.values()

@@ -18,8 +18,8 @@ class EnigmaService:
 
     # PUT
 
-    def updateEnigma(self, enigmaDTO):
-        self.enigmaRepository.updateEnigma(EnigmaMapper.toEntity(enigmaDTO), enigmaDTO.id)
+    def updateEnigma(self, enigmaDTO, id):
+        self.enigmaRepository.updateEnigma(EnigmaMapper.toEntity(enigmaDTO), id)
 
     # GET
 
