@@ -1,11 +1,29 @@
-
 class UserRepository:
 
     def __init__(self):
         self.usersRepository = {}
 
     def addUser(self, user):
-        self.usersRepository[len(self.usersRepository) + 1] = user
+        userId = user.userId
+        self.usersRepository[userId] = user
+
+    def editUser(self, user, userId):
+        if userId in self.usersRepository:
+            self.usersRepository[userId].name = user.name
+            self.usersRepository[userId].lastName = user.lastName
+            self.usersRepository[userId].password = user.password
+            self.usersRepository[userId].email = user.email
+            self.usersRepository[userId].isConnected = user.isConnected
+        else:
+            print("userId doesn't exist in repository")
+
+    def connectUserByEmailAndPassword(self, email, password):
+        user = self.getUserByEmailAndByPassword(email, password)
+        if user is None:
+            return None
+        else:
+            self.usersRepository[user.userId].isConnected = True
+            return user
 
     def getAllUsers(self):
         return self.usersRepository.values()

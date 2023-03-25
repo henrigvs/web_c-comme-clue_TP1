@@ -15,6 +15,12 @@ perPage = 5
 @listBP.route('/<int:page>', methods=['GET'])
 def list(page=1):
     global perPage
+
+    if session.get('userIsConnected') is None:
+        userConnected = False
+    else:
+        userConnected = True
+
     enigmas = JSONGetter.getEnigmasJSON()
     enigmasPaginated = Pagination.paginateEnigmas(enigmas, perPage)
     totalPages = int((len(enigmas) + perPage - 1) / perPage)
@@ -26,5 +32,6 @@ def list(page=1):
                            , enigmas=enigmasPaginated[page]
                            , difficultyLevel=None
                            , currentPage=page
-                           , totalPages=totalPages)
+                           , totalPages=totalPages
+                           , userConnected=userConnected)
 

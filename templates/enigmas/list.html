@@ -1,36 +1,43 @@
 {% extends "main.html" %}
 
 {% block body %}
-
 <h1>Enigmas List</h1>
-    <table>
-        <thead>
-            <tr>
-                <th style="padding-right: 50px">ID</th>
-                <th style="padding-right: 50px">Description</th>
-                <th style="padding-right: 30px">Solution</th>
-                <th>Hint</th>
-                <th>Difficulty</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for enigma in enigmas %}
+    {% if userConnected %}
+        <table>
+            <thead>
                 <tr>
-                    <td style="text-align: left; padding-right: 50px">{{ enigma.id }}</td>
-                    <td style="text-align: left; padding-right: 50px">{{ enigma.description }}</td>
-                    <td style="text-align: left; padding-right: 50px">{{ enigma.solution }}</td>
-                    <td><button id="sweetalert" class="btn-list" hint="{{ enigma.hint }}">show hint</button></td>
-                    <td>{{ enigma.difficulty }}</td>
-                    <td>
-                        <button class="btn-modify" onclick="location.href='/edit/{{ enigma.id }}'">Modify</button>
-                    </td>
+                    <th style="padding-right: 50px">ID</th>
+                    <th style="padding-right: 50px">Description</th>
+                    <th style="padding-right: 30px">Solution</th>
+                    <th>Hint</th>
+                    <th>Difficulty</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for enigma in enigmas %}
+                    <tr>
+                        <td style="text-align: left; padding-right: 50px">{{ enigma.id }}</td>
+                        <td style="text-align: left; padding-right: 50px">{{ enigma.description }}</td>
+                        <td style="text-align: left; padding-right: 50px">{{ enigma.solution }}</td>
+                        <td><button id="sweetalert" class="btn-list" hint="{{ enigma.hint }}">show hint</button></td>
+                        <td>{{ enigma.difficulty }}</td>
+                        <td>
+                            <button class="btn-modify" onclick="location.href='/edit/{{ enigma.id }}'">Modify</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h2>To be able to see the list of enigmas, you must be logged in</h2>
+        <div>
+            <button class="btn-edit" onclick="location.href='/login'">Login</button>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block footer %}
+{% if userConnected %}
     <div class="pagination">
         {% if currentPage > 1 %}
             <a href="{{ url_for('list.list', page=currentPage-1) }}">&laquo; Previous</a>
@@ -46,6 +53,12 @@
             <a href="{{ url_for('list.list', page=currentPage+1) }}">Next &raquo;</a>
         {% endif %}
     </div>
+{% endif %}
 {% endblock %}
+
+
+
+
+
 
 

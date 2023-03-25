@@ -1,4 +1,4 @@
-from users.api.dtos.UserMapper import UserMapper
+from users.api.service.mapper.UserMapper import UserMapper
 
 
 class UserService:
@@ -10,6 +10,9 @@ class UserService:
     def addUser(self, userDTO):
         self.userRepository.addUser(UserMapper.toEntity(userDTO))
 
+    def editUser(self, createUserDTO, userId):
+        self.userRepository.editUser(UserMapper.toEntity(createUserDTO), userId)
+
     # GET
     def getAllUsers(self):
         return [UserMapper.toDTO(user) for user in self.userRepository.getAllUsers()]
@@ -19,6 +22,9 @@ class UserService:
 
     def getUserByEmailAndByPassword(self, email, password):
         return UserMapper.toDTO(self.userRepository.getUserByEmailAndByPassword(email, password))
+
+    def connectUserByEmailAndPassword(self, email, password):
+        return UserMapper.toDTO(self.userRepository.connectUserByEmailAndPassword(email, password))
 
     def getUserByFullName(self, name, lastName):
         return UserMapper.toDTO(self.userRepository.getUserByFullName(name, lastName))

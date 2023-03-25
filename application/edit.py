@@ -28,7 +28,7 @@ def updateEnigma(id):
     hint = request.form['hint']
     difficulty = request.form['difficulty']
 
-    data = {
+    json = {
         'description': description,
         'solution': solution,
         'hint': hint,
@@ -36,7 +36,7 @@ def updateEnigma(id):
     }
 
     try:
-        response = requests.put(f'{apiUrl}/{id}', json=data)
+        response = requests.put(f'{apiUrl}/{id}', json=json)
         if response.status_code == 201:
             return redirect(url_for('list.list'))
         else:
@@ -44,7 +44,7 @@ def updateEnigma(id):
     except Exception as e:
         errorMessage = 'Error updating enigma.'
         print(e)
-    return render_template('enigmas/edit.html', error_message=errorMessage, enigma=data)
+    return render_template('enigmas/edit.html', error_message=errorMessage, enigma=json)
 
 
 @editBP.route('/<id>', methods=['DELETE'])

@@ -1,11 +1,5 @@
-from users.api.dtos.UserDTO import UserDTO
-
-
-def jsonUser(user):
-    return {'name': user.name,
-            'lastName': user.lastName,
-            'email': user.email,
-            'password': user.password}
+from users.api.service.dtos.CreateUserDTO import CreateUserDTO
+from users.api.service.dtos.UserDTO import UserDTO
 
 
 class UserController:
@@ -14,29 +8,34 @@ class UserController:
     def __init__(self, userService):
         self.userService = userService
 
-    def addUser(self, name, lastName, password, email):
-        userDTO = UserDTO(name, lastName, password, email)
-        self.userService.addUser(userDTO)
+    def addUser(self, name, lastName, password, email, isConnected):
+        createUserDTO = CreateUserDTO(name, lastName, password, email, isConnected)
+        self.userService.addUser(createUserDTO)
 
     # GET
     def getAllUsers(self):
-        users = self.userService.getAllUsers()
-        return [jsonUser(user) for user in users]
+        userDTOS = self.userService.getAllUsers()
+        return [userDTO.toJSON() for userDTO in userDTOS]
 
     def getUserById(self, id):
-        user = self.userService.getUserByUserId(id)
-        if user:
-            return jsonUser(user)
-        else:
-            return None
+        return self.userService.getUserByUserId(id)
+
 
     def getUserByEmailAndByPassword(self, email, password):
-        user = self.userService.getUserByEmailAndByPassword(email, password)
-        if user:
-            return jsonUser(user)
+        userDTO = self.userService.getUserByEmailAndByPassword(email, password)
+        if userDTO:
+            return userDTO.toJSON()
         else:
             return None
 
     def getUserByFullName(self, name, lastName):
-        user = self.userService.getUserByFullName(name, lastName)
-        return jsonUser(user)
+        userDTO = self.userService.getUserByFullName(name, lastName)
+        return userDTO.toJSON()
+
+    # PUT
+    def editUser(self, userId, name, lastName, password, email, isConnected):
+        return self.userService.editUser(CreateUserDTO(name, lastName, password, email, isConnected), userId)
+
+    def connectUserByEmailAndPassword(self, email, password):
+        return self.userService.connectUserByEmailAndPassword(email, password)
+
