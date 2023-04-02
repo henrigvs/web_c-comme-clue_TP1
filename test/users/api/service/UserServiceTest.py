@@ -1,72 +1,83 @@
-from uuid import UUID
-from unittest.mock import Mock, patch
+import unittest
 from src.users.api.service.UserService import UserService
 from src.users.api.service.dtos.CreateUserDTO import CreateUserDTO
+from src.users.api.service.dtos.UserDTO import UserDTO
 from src.users.api.service.mapper.UserMapper import UserMapper
-from src.users.domain.User import User
-
-# Initialisation des objets pour les tests
-userMapper = UserMapper()
-user = User("Ada", "Lovelace", "ada.lovelace@example.com", "password123")
-userId = "d7c09d5c-889d-4e1b-930e-d59117800d93"
-user.userId = userId
-userDTO = userMapper.toDTO(user)
-createUserDTO = CreateUserDTO(userDTO.firstName, userDTO.lastName, userDTO.password, userDTO.email, userDTO.isConnected)
+from src.users.domain.UserRepository import UserRepository
 
 
-@patch('uuid.uuid4', return_value=UUID(userId))
-def test_addUser(mock_uuid4):
-    userRepositoryMock = Mock()
-    userService = UserService(userRepositoryMock)
+class TestUserService(unittest.TestCase):
 
-    userService.addUser(createUserDTO)
+    def setUp(self):
+        # Initialization of objects for tests
+        self.userMapper = UserMapper()
+        self.userRepository = UserRepository()
+        self.userService = UserService(self.userRepository)
+        self.createUserDTO = CreateUserDTO("Ada", "Lovelace", "ada.lovelace@example.com", "password123", False)
 
-    userRepositoryMock.addUser.assert_called_once()
-    assert userRepositoryMock.addUser.call_args[0][0] == userMapper.toEntity(
-        createUserDTO), f"Expected call not found. Expected: {userMapper.toEntity(createUserDTO)}, Actual: {userRepositoryMock.addUser.call_args[0][0]}"
+    def test_addUser(self):
+        # Given When
+        userDTO = self.userService.addUser(self.createUserDTO)
+        userId = userDTO.userId
 
+        # Then
+        self.assertIsNotNone(userId)
+        self.assertEqual(userDTO.firstName, self.createUserDTO.firstName)
+        self.assertEqual(userDTO.lastName, self.createUserDTO.lastName)
+        self.assertEqual(userDTO.email, self.createUserDTO.email)
 
-@patch('uuid.uuid4', return_value=UUID(userId))
-def test_editUser(mock_uuid4):
-    userRepositoryMock = Mock()
-    userService = UserService(userRepositoryMock)
-    userRepositoryMock.editUser.return_value = user
+    def test_editUser(self):
+        # Given
+        userDTO = self.userService.addUser(self.createUserDTO)
+        updatingUserDTO = UserDTO(userDTO.userId,
+                                  self.createUserDTO.firstName,
+                                  self.createUserDTO.lastName,
+                                  self.createUserDTO.password,
+                                  "ada.lovelace@anotherExample.com",
+                                  self.createUserDTO.isConnected)
 
-    editedUser = userService.editUser(userDTO, 1)
+        # When
+        userDTOUpdated = self.userService.editUser(updatingUserDTO)
 
-    userRepositoryMock.editUser.assert_called_with(userMapper.toEntity(userDTO), 1)
-    assert editedUser == user
+        # Then
+        self.assertIsNotNone(updatingUserDTO.userId)
+        self.assertEqual(updatingUserDTO.firstName, userDTOUpdated.firstName)
+        self.assertEqual(updatingUserDTO.lastName, userDTOUpdated.lastName)
+        self.assertEqual("ada.lovelace@anotherExample.com", userDTOUpdated.email)
+        self.assertEqual(updatingUserDTO.password, userDTOUpdated.password)
 
+    def test_getAllUsers(self):
+        # Given
+        userDTO1 = self.userService.addUser(self.createUserDTO)
+        createUserDTO2 = CreateUserDTO("Alan", "Turing", "alan.turing@example.com", "password456", False)
+        userDTO2 = self.userService.addUser(createUserDTO2)
 
-def test_getAllUsers():
-    userRepositoryMock = Mock()
-    userService = UserService(userRepositoryMock)
-    userRepositoryMock.getAllUsers.return_value = [user]
+        # When
+        allUsers = self.userService.getAllUsers()
 
-    allUsers = userService.getAllUsers()
+        # Then
+        self.assertEqual(2, len(allUsers))
+        self.assertIn(userDTO1, allUsers)
+        self.assertIn(userDTO2, allUsers)
 
-    userRepositoryMock.getAllUsers.assert_called()
-    assert allUsers[0].firstName == userDTO.firstName
-    assert allUsers[0].lastName == userDTO.lastName
+    def test_getUserByUserId(self):
+        # Given
+        userDTO = self.userService.addUser(self.createUserDTO)
 
+        # When
+        foundUserDTO = self.userService.getUserByUserId(userDTO.userId)
 
-def test_getUserByUserId():
-    userRepositoryMock = Mock()
-    userService = UserService(userRepositoryMock)
-    userRepositoryMock.getUserByUserId.return_value = user
+        # Then
+        self.assertIsNotNone(foundUserDTO)
+        self.assertEqual(userDTO, foundUserDTO)
 
-    userResult = userService.getUserByUserId(user.userId)
+    def test_getUserByEmailAndByPassword(self):
+        # Given
+        userDTO = self.userService.addUser(self.createUserDTO)
 
-    userRepositoryMock.getUserByUserId.assert_called_with(user.userId)
-    assert userResult == UserMapper.toDTO(user)
+        # When
+        foundUserDTO = self.userService.getUserByEmailAndByPassword(self.createUserDTO.email, self.createUserDTO.password)
 
-
-def test_getUserByEmailAndByPassword():
-    user_repository_mock = Mock()
-    user_service = UserService(user_repository_mock)
-    user_repository_mock.getUserByEmailAndByPassword.return_value = user
-
-    user_result = user_service.getUserByEmailAndByPassword("ada.lovelace@example.com", "password123")
-
-    user_repository_mock.getUserByEmailAndByPassword.assert_called_with("ada.lovelace@example.com", "password123")
-    assert user_result == UserMapper.toDTO(user)
+        # Then
+        self.assertIsNotNone(foundUserDTO)
+        self.assertEqual(userDTO, foundUserDTO)

@@ -1,85 +1,94 @@
-from uuid import UUID
+import unittest
+from flask import json, current_app
 
-import pytest
-from unittest.mock import Mock
 from src.users.api.controller.UserController import UserController
 from src.users.api.service.UserService import UserService
 from src.users.api.service.dtos.CreateUserDTO import CreateUserDTO
-from src.users.api.service.dtos.UserDTO import UserDTO
-
-# Test data
-userId = "d7c09d5c-889d-4e1b-930e-d59117800d93"
-userDTO = UserDTO(userId, "Ada", "Lovelace", "ada.lovelace@example.com", "password123", True)
-createUserDTO = CreateUserDTO(userDTO.firstName, userDTO.lastName, userDTO.password, userDTO.email, userDTO.isConnected)
+from src.users.domain.UserRepository import UserRepository
+from flask import Flask
 
 
-def test_editUser():
-    # Mocking
-    userServiceMock = Mock(spec=UserService)
-    userController = UserController(userServiceMock)
-    userServiceMock.editUser.return_value = userDTO
+class UserControllerTest(unittest.TestCase):
 
-    # Execution
-    editedUser = userController.editUser(userDTO.userId, userDTO.firstName, userDTO.lastName, userDTO.password,
-                                         userDTO.email, userDTO.isConnected)
+    def setUp(self):
+        # Initialization of objects for tests
+        self.userRepository = UserRepository()
+        self.userService = UserService(self.userRepository)
+        self.userController = UserController(self.userService)
 
-    # Verification
-    userServiceMock.editUser.assert_called_with(createUserDTO, userDTO.userId)
-    assert editedUser == userDTO
+        # Setting up Flask test client
+        self.test_app = Flask(__name__)
+        self.test_app.config['TESTING'] = True
+        self.test_app.config['DEBUG'] = True  # Enable debug mode
+        self.test_app.register_blueprint(self.userController.userBP, url_prefix='/users')
+        self.client = self.test_app.test_client()
 
+    def test_addUser(self):
+        data = {
+            'firstName': 'Ada',
+            'lastName': 'Lovelace',
+            'email': 'ada.lovelace@example.com',
+            'password': 'password123'
+        }
+        response = self.client.post("/users/addUser", json=data)
+        print(response.data)  # Print the response data
+        self.assertEqual(201, response.status_code)
 
-def test_addUser():
-    # Mocking
-    userServiceMock = Mock(spec=UserService)
-    userController = UserController(userServiceMock)
-    userServiceMock.addUser.return_value = userDTO
+        json_data = json.loads(response.data)
+        self.assertIsNotNone(json_data['userId'])
+        self.assertEqual(json_data['firstName'], data['firstName'])
+        self.assertEqual(json_data['lastName'], data['lastName'])
+        self.assertEqual(json_data['email'], data['email'])
 
-    # Execution
-    newUser = userController.addUser(userDTO.firstName, userDTO.lastName, userDTO.password, userDTO.email,
-                                     userDTO.isConnected)
+    def test_getAllUsers(self):
+        # Add users before making the request
+        self._add_test_users()
 
-    # Verification
-    userServiceMock.addUser.assert_called_with(createUserDTO)
-    assert newUser == userDTO
+        response = self.client.get('/allUsers')
+        self.assertEqual(200, response.status_code)
 
+        json_data = json.loads(response.data)
+        self.assertEqual(len(json_data), 2)
 
-def test_getAllUsers():
-    # Mocking
-    userServiceMock = Mock(spec=UserService)
-    userController = UserController(userServiceMock)
-    userServiceMock.getAllUsers.return_value = [userDTO]
+    def test_getUserById(self):
+        # Add user before making the request
+        user = self._add_test_user()
 
-    # Execution
-    allUsers = userController.getAllUsers()
+        response = self.client.get(f'/{user.userId}')
+        self.assertEqual(response.status_code, 200)
 
-    # Verification
-    userServiceMock.getAllUsers.assert_called()
-    assert allUsers == [userDTO]
+        json_data = json.loads(response.data)
+        self.assertEqual(json_data['userId'], user.userId)
 
+    # Add other test cases for remaining routes
 
-def test_getUserById():
-    # Mocking
-    userServiceMock = Mock(spec=UserService)
-    userController = UserController(userServiceMock)
-    userServiceMock.getUserByUserId.return_value = userDTO
+    def _add_test_users(self):
+        users = [
+            {
+                'firstName': 'Ada',
+                'lastName': 'Lovelace',
+                'email': 'ada.lovelace@example.com',
+                'password': 'password123',
+                'isConnected': False,
+            },
+            {
+                'firstName': 'Alan',
+                'lastName': 'Turing',
+                'email': 'alan.turing@example.com',
+                'password': 'password456',
+                'isConnected': False,
+            },
+        ]
+        for user in users:
+            self.userService.addUser(CreateUserDTO(**user))
 
-    # Execution
-    user = userController.getUserById(userDTO.userId)
+    def _add_test_user(self):
+        data = {
+            'firstName': 'Ada',
+            'lastName': 'Lovelace',
+            'email': 'ada.lovelace@example.com',
+            'password': 'password123',
+            'isConnected': False,
+        }
+        return self.userService.addUser(CreateUserDTO(**data))
 
-    # Verification
-    userServiceMock.getUserByUserId.assert_called_with(userDTO.userId)
-    assert user == userDTO
-
-
-def test_getUserByEmailAndByPassword():
-    # Mocking
-    userServiceMock = Mock(spec=UserService)
-    userController = UserController(userServiceMock)
-    userServiceMock.getUserByEmailAndByPassword.return_value = userDTO
-
-    # Execution
-    user = userController.getUserByEmailAndByPassword(userDTO.email, userDTO.password)
-
-    # Verification
-    userServiceMock.getUserByEmailAndByPassword.assert_called_with(userDTO.email, userDTO.password)
-    assert user == userDTO

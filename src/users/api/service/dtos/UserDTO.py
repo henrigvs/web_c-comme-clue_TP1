@@ -1,3 +1,6 @@
+from typing import Dict
+
+
 class UserDTO:
 
     def __init__(self, userId: str, firstName: str, lastName: str, password: str, email: str, isConnected: bool):
@@ -8,13 +11,13 @@ class UserDTO:
         self.email = email
         self.isConnected = isConnected
 
-    def connect(self):
+    def connect(self) -> None:
         self.isConnected = True
 
     def disconnect(self):
         self.isConnected = False
 
-    def toJSON(self):
+    def toJSON(self) -> dict[str, bool | str]:
         return \
             {
                 'userId': self.userId,
@@ -36,4 +39,15 @@ class UserDTO:
                     and self.email == o.email
                     and self.password == o.password
                     and self.isConnected == o.isConnected)
+
+    def __repr__(self):
+        return f"UserDTO(userId={self.userId!r}, " \
+               f"firstName={self.firstName!r}, " \
+               f"lastName={self.lastName!r}, " \
+               f"password={self.password!r}, " \
+               f"email={self.email!r}, " \
+               f"isConnected={self.isConnected})"
+
+
+
 
