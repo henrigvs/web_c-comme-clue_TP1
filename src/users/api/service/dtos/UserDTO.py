@@ -17,17 +17,6 @@ class UserDTO:
     def disconnect(self):
         self.isConnected = False
 
-    def toJSON(self) -> dict[str, bool | str]:
-        return \
-            {
-                'userId': self.userId,
-                'firstName': self.firstName,
-                'lastName': self.lastName,
-                'email': self.email,
-                'password': self.password,
-                'isConnected': self.isConnected
-            }
-
     def __eq__(self, o: object) -> bool:
         if not isinstance(o, UserDTO):
             return False

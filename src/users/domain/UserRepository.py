@@ -12,7 +12,7 @@ class UserRepository:
         email = user.email
         for existingUser in self.userRepository.values():
             if existingUser.email == email:
-                raise Exception(f"Email {email} already exists in repository")
+                return None
         self.userRepository[user.userId] = user
         return user
 

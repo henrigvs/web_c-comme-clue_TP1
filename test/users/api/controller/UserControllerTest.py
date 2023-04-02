@@ -1,94 +1,154 @@
-import unittest
-from flask import json, current_app
-
-from src.users.api.controller.UserController import UserController
-from src.users.api.service.UserService import UserService
-from src.users.api.service.dtos.CreateUserDTO import CreateUserDTO
-from src.users.domain.UserRepository import UserRepository
+import pytest
 from flask import Flask
 
+from src.users.api.controller.UserController import userBP
 
-class UserControllerTest(unittest.TestCase):
 
-    def setUp(self):
-        # Initialization of objects for tests
-        self.userRepository = UserRepository()
-        self.userService = UserService(self.userRepository)
-        self.userController = UserController(self.userService)
+@pytest.fixture
+def app():
+    app = Flask(__name__)
+    app.register_blueprint(userBP, url_prefix="/users")
+    return app
 
-        # Setting up Flask test client
-        self.test_app = Flask(__name__)
-        self.test_app.config['TESTING'] = True
-        self.test_app.config['DEBUG'] = True  # Enable debug mode
-        self.test_app.register_blueprint(self.userController.userBP, url_prefix='/users')
-        self.client = self.test_app.test_client()
 
-    def test_addUser(self):
-        data = {
-            'firstName': 'Ada',
-            'lastName': 'Lovelace',
-            'email': 'ada.lovelace@example.com',
-            'password': 'password123'
-        }
-        response = self.client.post("/users/addUser", json=data)
-        print(response.data)  # Print the response data
-        self.assertEqual(201, response.status_code)
+@pytest.fixture
+def client(app):
+    return app.test_client()
 
-        json_data = json.loads(response.data)
-        self.assertIsNotNone(json_data['userId'])
-        self.assertEqual(json_data['firstName'], data['firstName'])
-        self.assertEqual(json_data['lastName'], data['lastName'])
-        self.assertEqual(json_data['email'], data['email'])
 
-    def test_getAllUsers(self):
-        # Add users before making the request
-        self._add_test_users()
+def test_addUser(client):
+    data = {
+        'firstName': 'Ada',
+        'lastName': 'Lovelace',
+        'email': 'ada.lovelace@example.com',
+        'password': 'password123'
+    }
+    response = client.post("/users/addUser", json=data)
+    assert response.status_code == 201
 
-        response = self.client.get('/allUsers')
-        self.assertEqual(200, response.status_code)
 
-        json_data = json.loads(response.data)
-        self.assertEqual(len(json_data), 2)
+def test_addUser_existing_email(client):
+    data = {
+        'firstName': 'Ada',
+        'lastName': 'Lovelace',
+        'email': 'ada.lovelace@example.com',
+        'password': 'password123'
+    }
+    client.post("/users/addUser", json=data)
 
-    def test_getUserById(self):
-        # Add user before making the request
-        user = self._add_test_user()
+    data = {
+        'firstName': 'Grace',
+        'lastName': 'Hopper',
+        'email': 'ada.lovelace@example.com',
+        'password': 'password123'
+    }
+    response = client.post("/users/addUser", json=data)
+    assert response.status_code == 400
 
-        response = self.client.get(f'/{user.userId}')
-        self.assertEqual(response.status_code, 200)
 
-        json_data = json.loads(response.data)
-        self.assertEqual(json_data['userId'], user.userId)
+def test_getAllUsers(client):
+    data = {
+        'firstName': 'Ada',
+        'lastName': 'Lovelace',
+        'email': 'ada.lovelace@example.com',
+        'password': 'password123'
+    }
+    client.post("/users/addUser", json=data)
 
-    # Add other test cases for remaining routes
+    data = {
+        'firstName': 'Allan',
+        'lastName': 'turing',
+        'email': 'allan.turing@example.com',
+        'password': 'password123'
+    }
+    client.post("/users/addUser", json=data)
 
-    def _add_test_users(self):
-        users = [
-            {
-                'firstName': 'Ada',
-                'lastName': 'Lovelace',
-                'email': 'ada.lovelace@example.com',
-                'password': 'password123',
-                'isConnected': False,
-            },
-            {
-                'firstName': 'Alan',
-                'lastName': 'Turing',
-                'email': 'alan.turing@example.com',
-                'password': 'password456',
-                'isConnected': False,
-            },
-        ]
-        for user in users:
-            self.userService.addUser(CreateUserDTO(**user))
+    response = client.get("/users/allUsers")
+    assert response.status_code == 200
+    assert len(response.json) == 2
 
-    def _add_test_user(self):
-        data = {
-            'firstName': 'Ada',
-            'lastName': 'Lovelace',
-            'email': 'ada.lovelace@example.com',
-            'password': 'password123',
-            'isConnected': False,
-        }
-        return self.userService.addUser(CreateUserDTO(**data))
 
+def test_getUserById(client):
+    data = {
+        'firstName': 'Ada',
+        'lastName': 'Lovelace',
+        'email': 'ada.lovelace@example.com',
+        'password': 'password123'
+    }
+    response = client.post("/users/addUser", json=data)
+    jsonResponse = response.json
+    userId = jsonResponse['userId']
+
+    response = client.get(f"/users/{userId}")
+    assert response.status_code == 200
+    assert jsonResponse['firstName'] == "Ada"
+    assert jsonResponse['email'] == "ada.lovelace@example.com"
+
+
+def test_editUser(client):
+    # Given
+    data = {
+        'firstName': 'Ada',
+        'lastName': 'Lovelace',
+        'email': 'ada.lovelace@example.com',
+        'password': 'password123',
+        'isConnected': True
+    }
+    response = client.post("/users/addUser", json=data)
+    jsonResponse = response.json
+    userId = jsonResponse['userId']
+
+    # When
+    data = {
+        'firstName': 'Ada',
+        'lastName': 'Lovelace',
+        'email': 'ada.lovelace@example.com',
+        'password': 'newPassword',
+        'isConnected': True
+    }
+    response = client.put(f"/users/{userId}", json=data)
+    jsonResponse = response.json
+
+    # Then
+    assert response.status_code == 200
+    assert jsonResponse['password'] == "newPassword"
+
+
+def test_connectAnUserByEmailAndPassword(client):
+    data = {
+        'firstName': 'Ada',
+        'lastName': 'Lovelace',
+        'email': 'ada.lovelace@example.com',
+        'password': 'password123',
+        'isConnected': False
+    }
+    client.post("/users/addUser", json=data)
+
+    data = {
+        'email': 'ada.lovelace@example.com',
+        'password': 'password123'
+    }
+    response = client.put('/users/login', json=data)
+    jsonResponse = response.json
+    assert response.status_code == 200
+    assert jsonResponse['isConnected'] == True
+
+
+def test_disconnectAnUserByUserId(client):
+    data = {
+        'firstName': 'Ada',
+        'lastName': 'Lovelace',
+        'email': 'ada.lovelace@example.com',
+        'password': 'password123',
+        'isConnected': True
+    }
+    response = client.post("/users/addUser", json=data)
+    jsonResponse = response.json
+    userId = jsonResponse['userId']
+
+    data = {
+        'userId': f"{userId}"
+    }
+    response = client.put('/users/logout', json=data)
+    assert response.status_code == 200
+    assert response.json['isConnected'] == False
