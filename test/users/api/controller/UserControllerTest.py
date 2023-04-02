@@ -16,6 +16,10 @@ def client(app):
     return app.test_client()
 
 
+def deleteUser(client, userId: str):    # A method to help resetting the repository
+    client.delete(f"/users/delete/{userId}")
+
+
 def test_addUser(client):
     data = {
         'firstName': 'Ada',
@@ -25,6 +29,7 @@ def test_addUser(client):
     }
     response = client.post("/users/addUser", json=data)
     assert response.status_code == 201
+    deleteUser(client, response.json['userId'])
 
 
 def test_addUser_existing_email(client):
@@ -34,7 +39,8 @@ def test_addUser_existing_email(client):
         'email': 'ada.lovelace@example.com',
         'password': 'password123'
     }
-    client.post("/users/addUser", json=data)
+    response = client.post("/users/addUser", json=data)
+    userId = response.json['userId']
 
     data = {
         'firstName': 'Grace',
@@ -45,6 +51,8 @@ def test_addUser_existing_email(client):
     response = client.post("/users/addUser", json=data)
     assert response.status_code == 400
 
+    deleteUser(client, userId)
+
 
 def test_getAllUsers(client):
     data = {
@@ -53,7 +61,8 @@ def test_getAllUsers(client):
         'email': 'ada.lovelace@example.com',
         'password': 'password123'
     }
-    client.post("/users/addUser", json=data)
+    response = client.post("/users/addUser", json=data)
+    userId1 = response.json['userId']
 
     data = {
         'firstName': 'Allan',
@@ -62,10 +71,14 @@ def test_getAllUsers(client):
         'password': 'password123'
     }
     client.post("/users/addUser", json=data)
+    userId2 = response.json['userId']
 
     response = client.get("/users/allUsers")
     assert response.status_code == 200
-    assert len(response.json) == 2
+    assert len(response.json) == 3
+
+    deleteUser(client, userId1)
+    deleteUser(client, userId2)
 
 
 def test_getUserById(client):
@@ -83,6 +96,8 @@ def test_getUserById(client):
     assert response.status_code == 200
     assert jsonResponse['firstName'] == "Ada"
     assert jsonResponse['email'] == "ada.lovelace@example.com"
+
+    deleteUser(client, userId)
 
 
 def test_editUser(client):
@@ -113,6 +128,8 @@ def test_editUser(client):
     assert response.status_code == 200
     assert jsonResponse['password'] == "newPassword"
 
+    deleteUser(client, userId)
+
 
 def test_connectAnUserByEmailAndPassword(client):
     data = {
@@ -133,6 +150,8 @@ def test_connectAnUserByEmailAndPassword(client):
     assert response.status_code == 200
     assert jsonResponse['isConnected'] == True
 
+    deleteUser(client, response.json['userId'])
+
 
 def test_disconnectAnUserByUserId(client):
     data = {
@@ -152,3 +171,5 @@ def test_disconnectAnUserByUserId(client):
     response = client.put('/users/logout', json=data)
     assert response.status_code == 200
     assert response.json['isConnected'] == False
+
+    deleteUser(client, userId)

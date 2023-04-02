@@ -12,13 +12,10 @@ class UserService:
         self.userRepository = userRepository
         self.userMapper = UserMapper()
 
-    # POST
     def addUser(self, createUserDTO: CreateUserDTO) -> UserDTO:
         user = self.userRepository.addUser(UserMapper.toEntity(createUserDTO))
-        newUserDTO = self.userMapper.toDTO(user)
-        return newUserDTO
+        return self.userMapper.toDTO(user)
 
-    # PUT
     def editUser(self, updatingUserDTO: UserDTO) -> UserDTO:
         user = User(updatingUserDTO.firstName,
                     updatingUserDTO.lastName,
@@ -26,15 +23,20 @@ class UserService:
                     updatingUserDTO.email,
                     updatingUserDTO.isConnected)
         updatedUser = self.userRepository.editUser(user, updatingUserDTO.userId)
-        updatedUserDTO = self.userMapper.toDTO(updatedUser)
-        return updatedUserDTO
+        return self.userMapper.toDTO(updatedUser)
 
-    # GET
     def getAllUsers(self) -> List[UserDTO]:
-        return [UserMapper.toDTO(user) for user in self.userRepository.getAllUsers()]
+        users = self.userRepository.getAllUsers()
+        return [self.userMapper.toDTO(user) for user in users]
 
     def getUserByUserId(self, userId: str) -> UserDTO:
-        return UserMapper.toDTO(self.userRepository.getUserByUserId(userId))
+        user = self.userRepository.getUserByUserId(userId)
+        return self.userMapper.toDTO(user)
 
     def getUserByEmailAndByPassword(self, email: str, password: str) -> UserDTO:
-        return UserMapper.toDTO(self.userRepository.getUserByEmailAndByPassword(email, password))
+        user = self.userRepository.getUserByEmailAndByPassword(email, password)
+        return self.userMapper.toDTO(user)
+
+    def deleteUserByUserId(self, userId: str) -> UserDTO:
+        deletedUser = self.userRepository.deleteUserByUserId(userId)
+        return self.userMapper.toDTO(deletedUser)

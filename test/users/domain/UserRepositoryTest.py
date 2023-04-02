@@ -26,8 +26,7 @@ class TestUserRepository(unittest.TestCase):
     def test_addUserWithExistingEmail(self) -> None:
         user4 = User("Billy", "Gatas", "office365", "billgates@microsoft.com", False)
 
-        with self.assertRaises(Exception):
-            self.userRepository.addUser(user4)
+        assert self.userRepository.addUser(user4) is None
 
     def test_editUser(self) -> None:
         userId = self.user2.userId

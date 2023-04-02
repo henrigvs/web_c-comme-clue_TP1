@@ -17,6 +17,16 @@ class UserDTO:
     def disconnect(self):
         self.isConnected = False
 
+    def to_dict(self) -> dict:
+        return {
+            'userId': self.userId,
+            'firstName': self.firstName,
+            'lastName': self.lastName,
+            'password': self.password,
+            'email': self.email,
+            'isConnected': self.isConnected
+        }
+
     def __eq__(self, o: object) -> bool:
         if not isinstance(o, UserDTO):
             return False
