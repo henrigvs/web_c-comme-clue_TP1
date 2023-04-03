@@ -1,6 +1,8 @@
 from flask import jsonify, request, Blueprint
 
 from src.Riddles.api.service.RiddleService import RiddleService
+from src.Riddles.api.service.dtos.CreateRiddleDTO import CreateRiddleDTO
+from src.Riddles.api.service.dtos.RiddleDTO import RiddleDTO
 from src.Riddles.domain.Riddle import Riddle
 from src.Riddles.domain.RiddleRepository import RiddleRepository
 
@@ -12,41 +14,60 @@ riddleRepository = RiddleRepository()
 riddleService = RiddleService(riddleRepository)
 
 # Create initial data
-riddleRepository.addRiddle(Riddle("Qu'est-ce qui est jaune et qui attend", "jonathan", "pas d'indice", 0))
-riddleRepository.addRiddle(Riddle("Je mets mes dents entre tes dents", "fourchette", "Je suis un couvert de table", 1))
-riddleRepository.addRiddle(Riddle("Même en marchant vers lui, vous ne pourrez jamais l'atteindre", "horizon",
-                           "On peut me voir à la plage", 1))
+riddleRepository.addRiddle(Riddle("Qu'est-ce qui est jaune et qui attend",
+                                  "jonathan",
+                                  "pas d'indice",
+                                  0))
+riddleRepository.addRiddle(Riddle("Je mets mes dents entre tes dents",
+                                  "fourchette",
+                                  "Je suis un couvert de table",
+                                  1))
+riddleRepository.addRiddle(Riddle("Même en marchant vers lui, vous ne pourrez jamais l'atteindre",
+                                  "horizon",
+                                  "On peut me voir à la plage",
+                                  1))
 
 
 # POST
-@riddleBP.route('/', methods=['POST'])
-def addEnigma():
+@riddleBP.route('/addRiddle', methods=['POST'])
+def addRiddle():
     data = request.get_json()
-    riddleService.addEnigma(data['description'], data['solution'], data['hint'], data['difficulty'])
-    return jsonify({'success': True}), 201
+    createRiddleDTO = CreateRiddleDTO(data['description'], data['solution'], data['clue'], data['difficulty'])
+    riddleDTO = riddleService.addRiddle(createRiddleDTO)
+    return _jsonifyRiddles(riddleDTO, 201, "add riddle failed", 400)
 
 
 # DELETE
-@riddleBP.route('/<id>', methods=['DELETE'])
-def deleteEnigma(id):
-    riddleService.deleteRiddle(id)
-    return jsonify({'success': True}), 200
+@riddleBP.route('/delete/<riddleId>', methods=['DELETE'])
+def deleteRiddle(riddleId):
+    riddleDTO = riddleService.deleteRiddle(riddleId)
+    return _jsonifyRiddles(riddleDTO, 200, "riddleId unknown", 404)
 
 
 # PUT
-@riddleBP.route('/<id>', methods=['PUT'])
-def updateEnigma(id):
+@riddleBP.route('/edit/<riddleId>', methods=['PUT'])
+def editRiddle(riddleId):
     data = request.get_json()
-    riddleService.updateRiddle(id, data['description'])
-    return jsonify({'success': True}), 201
+    createRiddleDTO = CreateRiddleDTO(data['description'], data['solution'], data['clue'], data['difficulty'])
+    riddleDTO = riddleService.editRiddle(createRiddleDTO, riddleId)
+    return _jsonifyRiddles(riddleDTO, 200, "riddleId unknown", 404)
 
 
 # GET
-@riddleBP.route('/', methods=['GET'])
-def getAllEnigmas():
-    return jsonify(riddleService.getAllEnigmas())
+@riddleBP.route('/getAllRiddles', methods=['GET'])
+def getAllRiddles():
+    riddleDTOs = riddleService.getAllRiddle()
+    return jsonify([riddleDTO.to_dict() for riddleDTO in riddleDTOs])
 
 
-@riddleBP.route('/<id>', methods=['GET'])
-def getEnigmaById(id):
-    return jsonify(riddleService.getEnigmaById(id))
+@riddleBP.route('/riddle/<riddleId>', methods=['GET'])
+def getRiddleById(riddleId):
+    riddleDTO = riddleService.getRiddleByID(riddleId)
+    return _jsonifyRiddles(riddleDTO, 200, "riddleId unknown", 404)
+
+
+def _jsonifyRiddles(riddleDTO: RiddleDTO, code_ok: int, message_ko, code_ko: int):
+    if riddleDTO is not None:
+        return jsonify(riddleDTO.to_dict()), code_ok
+    else:
+        return jsonify({'success': False, 'message': message_ko}), code_ko

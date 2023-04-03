@@ -15,7 +15,7 @@ class RiddleRepositoryTest(unittest.TestCase):
 
     def test_updateRiddle(self):
         updated_riddle = Riddle("Updated description", "Updated solution", "Updated clue", 2)
-        result = self.repository.updateRiddle(updated_riddle, self.riddle.riddleId)
+        result = self.repository.editRiddle(updated_riddle, self.riddle.riddleId)
         self.assertEqual(result.description, "Updated description")
         self.assertEqual(result.solution, "Updated solution")
         self.assertEqual(result.clue, "Updated clue")

@@ -12,7 +12,7 @@ class RiddleRepository:
         self.riddleRepository[riddle.riddleId] = riddle
         return riddle
 
-    def updateRiddle(self, riddle: Riddle, riddleId: str) -> Riddle:
+    def editRiddle(self, riddle: Riddle, riddleId: str) -> Riddle:
         if riddleId not in self.riddleRepository:
             return None
 

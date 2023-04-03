@@ -7,6 +7,15 @@ class RiddleDTO:
         self.clue = clue
         self.difficulty = difficulty
 
+    def to_dict(self) -> dict:
+        return {
+            'riddleId': self.riddleId,
+            'description': self.description,
+            'solution': self.solution,
+            'clue': self.clue,
+            'difficulty': self.difficulty
+        }
+
     def __eq__(self, other):
         if not isinstance(other, RiddleDTO):
             return False

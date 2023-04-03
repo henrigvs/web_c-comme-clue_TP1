@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 
-from src.Riddles.api.MyEnigmaAPI import enigmaBP
+from src.Riddles.api.controller.RiddleController import riddleBP
 from src.application.game import gameBP
 from src.application.edit import editBP
 from src.application.LoginUser import loginBP
@@ -14,7 +14,7 @@ BASE_URL = f"http://localhost:{PORT}"
 app.secret_key = "secretKey"
 
 app.register_blueprint(gameBP, url_prefix='/game')
-app.register_blueprint(enigmaBP, url_prefix='/enigmas')
+app.register_blueprint(riddleBP, url_prefix='/riddles')
 app.register_blueprint(listBP, url_prefix='/list')
 app.register_blueprint(editBP, url_prefix='/edit')
 app.register_blueprint(loginBP, url_prefix='/login')
