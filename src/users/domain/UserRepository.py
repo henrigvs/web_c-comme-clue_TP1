@@ -24,7 +24,7 @@ class UserRepository:
     def getAllUsers(self) -> List[User]:
         return list(self.userRepository.values())
 
-    def getUserByUserId(self, userId) -> Optional[User]:
+    def getUserByUserId(self, userId: str) -> Optional[User]:
         return self.userRepository.get(userId)
 
     def getUserByEmailAndByPassword(self, email: str, password: str) -> Optional[User]:

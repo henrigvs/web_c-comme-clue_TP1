@@ -1,7 +1,7 @@
-from src.Enigmas.api.service.mapper.EnigmaMapper import EnigmaMapper
+from src.Riddles.api.service.mapper.EnigmaMapper import EnigmaMapper
 
 
-class EnigmaService:
+class RiddleService:
     def __init__(self, enigmaRepository):
         self.enigmaRepository = enigmaRepository
 

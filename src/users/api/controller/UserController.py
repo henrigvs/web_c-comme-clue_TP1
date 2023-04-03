@@ -6,11 +6,14 @@ from src.users.api.service.dtos.UserDTO import UserDTO
 from src.users.domain.User import User
 from src.users.domain.UserRepository import UserRepository
 
+# BluePrint
 userBP = Blueprint('users', __name__)
 
+# Initializing service
 userRepository = UserRepository()
 userService = UserService(userRepository)
 
+# Create initial data
 userRepository.addUser(User("Henri", "Gevenois", "1234", "henri.gevenois@student.unamur.be", False))
 
 

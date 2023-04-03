@@ -5,7 +5,7 @@ class JSONConverter:
         enigmas = []
         for data in jsonData:
             enigma = {
-                "id": data["id"],
+                "riddleId": data["riddleId"],
                 "description": data["description"],
                 "hint": data["hint"],
                 "solution": data["solution"],

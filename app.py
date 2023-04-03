@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 
-from src.Enigmas.api.MyEnigmaAPI import enigmaBP
+from src.Riddles.api.MyEnigmaAPI import enigmaBP
 from src.application.game import gameBP
 from src.application.edit import editBP
 from src.application.LoginUser import loginBP
