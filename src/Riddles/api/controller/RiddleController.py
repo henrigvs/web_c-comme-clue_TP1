@@ -29,7 +29,7 @@ def addEnigma():
 # DELETE
 @riddleBP.route('/<id>', methods=['DELETE'])
 def deleteEnigma(id):
-    riddleService.deleteEnigma(id)
+    riddleService.deleteRiddle(id)
     return jsonify({'success': True}), 200
 
 
@@ -37,7 +37,7 @@ def deleteEnigma(id):
 @riddleBP.route('/<id>', methods=['PUT'])
 def updateEnigma(id):
     data = request.get_json()
-    riddleService.updateEnigma(id, data['description'], data['solution'], data['hint'], data['difficulty'])
+    riddleService.updateRiddle(id, data['description'])
     return jsonify({'success': True}), 201
 
 
