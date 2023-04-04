@@ -12,7 +12,6 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 # If change port here, should modify into blueprints
 PORT = 5000
-BASE_URL = f"http://localhost:{PORT}"
 app.secret_key = "secretKey"
 
 app.register_blueprint(gameBP, url_prefix='/game')

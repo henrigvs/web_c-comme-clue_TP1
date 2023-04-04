@@ -1,0 +1,6 @@
+1. cd to the root of my project
+2. . venv/bin/activate (don't forget the dot . )
+
+3. if needed : export FLASK_APP=app.py
+4. flask run
+
