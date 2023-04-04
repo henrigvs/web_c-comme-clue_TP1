@@ -1,10 +1,10 @@
 from flask import Flask, render_template
 
-from src.Riddles.api.controller.RiddleController import riddleBP
-from src.application.game import gameBP
-from src.application.edit import editBP
 from src.application.LoginUser import loginBP
+from src.application.edit import editBP
+from src.application.game import gameBP
 from src.application.list import listBP
+from src.riddles.api.controller.RiddleController import riddleBP
 from src.users.api.controller.UserController import userBP
 
 app = Flask(__name__)
@@ -23,7 +23,7 @@ app.register_blueprint(userBP, url_prefix='/users')
 
 @app.route('/')
 def getIndex():
-    return render_template('enigmas/index.html')
+    return render_template('riddles/index.html')
 
 
 if __name__ == '__main__':

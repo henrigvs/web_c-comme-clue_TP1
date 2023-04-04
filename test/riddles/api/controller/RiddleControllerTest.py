@@ -1,10 +1,10 @@
 import pytest
 from flask import Flask
 
-from src.Riddles.api.controller.RiddleController import riddleBP
-from src.Riddles.api.service.dtos.RiddleDTO import RiddleDTO
-from src.Riddles.domain.Riddle import Riddle
-from src.Riddles.domain.RiddleRepository import RiddleRepository
+from src.riddles.api.controller.RiddleController import riddleBP
+from src.riddles.api.service.dtos.RiddleDTO import RiddleDTO
+from src.riddles.domain.Riddle import Riddle
+from src.riddles.domain.RiddleRepository import RiddleRepository
 
 
 @pytest.fixture

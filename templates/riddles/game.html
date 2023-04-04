@@ -1,9 +1,9 @@
 {% extends "main.html" %}
 
 {% block body %}
-  <h1>Riddle n° {{ current_enigma }}</h1>
+  <h1>Riddle n° {{ currentRiddle }}</h1>
   <div>
-    <h2 id="enigma-description">{{ enigma }}</h2>
+    <h2 id="riddle-description">{{ riddle.description }}</h2>
     {% if not_correct == True %}
     <h3 id="not-correct">The answer isn't correct, try again</h3>
     {% endif %}
@@ -16,7 +16,7 @@
 
   </div>
   <div>
-    <button id="sweetalert" class="btn" hint="{{ hint }}">Get an hint</button>
+    <button id="sweetalert" class="btn" clue="{{ riddle.clue }}">Get an hint</button>
   </div>
 
 

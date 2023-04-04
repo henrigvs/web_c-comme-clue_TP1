@@ -1,10 +1,12 @@
 import requests
-from src.application.static_methods.JSONConverter import JSONConverter
+
+from src.application.static_methods.JSONToERiddles import convertJSONToERiddlesArray
+
 
 class JSONGetter:
 
     @staticmethod
-    def getEnigmasJSON():
-        enigmas_response = requests.get("http://localhost:5000/enigmas/")
-        enigmas = JSONConverter.convertJSONToEnigmaArray(enigmas_response.json())
+    def getRiddlesJSON():
+        riddlesResponse = requests.get("http://localhost:5000/enigmas/")
+        enigmas = convertJSONToERiddlesArray(riddlesResponse.json())
         return enigmas

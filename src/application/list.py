@@ -1,5 +1,5 @@
-from src.application.static_methods.Pagination import Pagination
 from src.application.static_methods.JSONGetter import JSONGetter
+from src.application.static_methods.Pagination import Pagination
 
 from flask import Blueprint, render_template, session
 
@@ -27,7 +27,7 @@ def list(page=1):
     if page > totalPages or page < 1:
         return render_template('error/404.html'), 404
 
-    return render_template('enigmas/list.html'
+    return render_template('riddles/list.html'
                            , enigmas=enigmasPaginated[page]
                            , difficultyLevel=None
                            , currentPage=page

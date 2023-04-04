@@ -13,7 +13,7 @@ def editEnigma(id):
     if enigmaData.status_code != 200:
         return "Error: Unable to fetch data", 500
     enigma = enigmaData.json()
-    return render_template('enigmas/edit.html'
+    return render_template('riddles/edit.html'
                            , enigma=enigma)
 
 
@@ -40,7 +40,7 @@ def updateEnigma(id):
     except Exception as e:
         errorMessage = 'Error updating enigma.'
         print(e)
-    return render_template('enigmas/edit.html', error_message=errorMessage, enigma=json)
+    return render_template('riddles/edit.html', error_message=errorMessage, enigma=json)
 
 
 @editBP.route('/<id>', methods=['DELETE'])

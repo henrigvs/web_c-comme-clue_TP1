@@ -1,9 +1,9 @@
 from typing import List
 
-from src.Riddles.api.service.dtos.CreateRiddleDTO import CreateRiddleDTO
-from src.Riddles.api.service.dtos.RiddleDTO import RiddleDTO
-from src.Riddles.api.service.mapper.RiddleMapper import RiddleMapper
-from src.Riddles.domain.Riddle import Riddle
+from src.riddles.api.service.dtos.CreateRiddleDTO import CreateRiddleDTO
+from src.riddles.api.service.dtos.RiddleDTO import RiddleDTO
+from src.riddles.api.service.mapper.RiddleMapper import RiddleMapper
+from src.riddles.domain.Riddle import Riddle
 
 
 class RiddleService:

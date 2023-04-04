@@ -1,5 +1,5 @@
-from src.Riddles.api.service.dtos.RiddleDTO import RiddleDTO
-from src.Riddles.domain.Riddle import Riddle
+from src.riddles.api.service.dtos.RiddleDTO import RiddleDTO
+from src.riddles.domain.Riddle import Riddle
 
 
 class RiddleMapper:
