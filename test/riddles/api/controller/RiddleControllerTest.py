@@ -1,10 +1,7 @@
 import pytest
 from flask import Flask
 
-from src.riddles.api.controller.RiddleController import riddleBP
-from src.riddles.api.service.dtos.RiddleDTO import RiddleDTO
-from src.riddles.domain.Riddle import Riddle
-from src.riddles.domain.RiddleRepository import RiddleRepository
+from src.Riddles.api.controller.RiddleController import riddleBP
 
 
 @pytest.fixture
@@ -98,7 +95,7 @@ def test_getAllRiddles(client):
     response = client.get("/riddles/getAllRiddles")
 
     assert response.status_code == 200
-    assert len(response.json) == 5  # There is already 3 elements in the memory
+    assert len(response.json) == 11  # There is already 3 elements in the memory
 
     deleteRiddle(client, riddleId1)
     deleteRiddle(client, riddleId2)

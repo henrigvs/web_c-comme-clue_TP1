@@ -3,22 +3,20 @@
 {% block body %}
 <h1>Enigmas List</h1>
     {% if userConnected %}
-        <table>
+        <table width="70%">
             <thead>
                 <tr>
-                    <th style="padding-right: 50px">ID</th>
-                    <th style="padding-right: 50px">Description</th>
-                    <th style="padding-right: 30px">Solution</th>
-                    <th>Hint</th>
+                    <th>Riddle</th>
+                    <th>Solution</th>
+                    <th>Clue</th>
                     <th>Difficulty</th>
                 </tr>
             </thead>
             <tbody>
                 {% for riddle in riddles %}
                     <tr>
-                        <td style="text-align: left; padding-right: 50px">{{ riddle.riddleId }}</td>
                         <td style="text-align: left; padding-right: 50px">{{ riddle.description }}</td>
-                        <td style="text-align: left; padding-right: 50px">{{ riddle.solution }}</td>
+                        <td><button id="sweetalert" class="btn-solution" solution="{{ riddle.solution}}">show solution</button></td>
                         <td><button id="sweetalert" class="btn-list" clue="{{ riddle.clue }}">show clue</button></td>
                         <td>{{ riddle.difficulty }}</td>
                         <td>
@@ -40,17 +38,17 @@
 {% if userConnected %}
     <div class="pagination">
         {% if currentPage > 1 %}
-            <a href="{{ url_for('list.getlist', page=currentPage-1) }}">&laquo; Previous</a>
+            <a href="{{ url_for('list.getList', page=currentPage-1) }}">&laquo; Previous</a>
         {% endif %}
         {% for page in range(1, totalPages+1) %}
             {% if page == currentPage %}
                 <span>{{ page }}</span>
             {% else %}
-                <a href="{{ url_for('list.getlist', page=page) }}">{{ page }}</a>
+                <a href="{{ url_for('list.getList', page=page) }}">{{ page }}</a>
             {% endif %}
         {% endfor %}
         {% if currentPage < totalPages %}
-            <a href="{{ url_for('list.getlist', page=currentPage+1) }}">Next &raquo;</a>
+            <a href="{{ url_for('list.getList', page=currentPage+1) }}">Next &raquo;</a>
         {% endif %}
     </div>
 {% endif %}

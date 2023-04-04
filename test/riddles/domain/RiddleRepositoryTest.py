@@ -1,6 +1,6 @@
 import unittest
-from src.riddles.domain.Riddle import Riddle
-from src.riddles.domain.RiddleRepository import RiddleRepository
+from src.Riddles.domain.Riddle import Riddle
+from src.Riddles.domain.RiddleRepository import RiddleRepository
 
 
 class RiddleRepositoryTest(unittest.TestCase):

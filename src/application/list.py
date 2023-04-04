@@ -12,7 +12,7 @@ perPage = 5
 
 @listBP.route('/', methods=['GET'])
 @listBP.route('/<int:page>', methods=['GET'])
-def getlist(page=1):
+def getList(page=1):
     global perPage
 
     if session.get('userIsConnected') is None:
@@ -21,7 +21,7 @@ def getlist(page=1):
         userConnected = True
 
     riddles = JSONGetter.getRiddlesJSON()
-    riddlesPaginated = Pagination.paginateEnigmas(riddles, perPage)
+    riddlesPaginated = Pagination.paginateRiddle(riddles, perPage)
     totalPages = int((len(riddles) + perPage - 1) / perPage)
 
     if page > totalPages or page < 1:

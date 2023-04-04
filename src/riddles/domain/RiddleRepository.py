@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from src.riddles.domain.Riddle import Riddle
+from src.Riddles.domain.Riddle import Riddle
 
 
 class RiddleRepository:

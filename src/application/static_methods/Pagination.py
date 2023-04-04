@@ -1,17 +1,16 @@
-
 class Pagination:
 
     @staticmethod
-    def paginateEnigmas(enigmas, maxPerPage):
+    def paginateRiddle(riddle, maxPerPage):
         pagination = {}
-        lastPage = (len(enigmas) / maxPerPage) + 1
+        lastPage = (len(riddle) / maxPerPage) + 1
         key = 1
         indexEnigmas = 0
         while key <= lastPage:
             tempArray = []
             i = 0
-            while i < 5 and indexEnigmas < len(enigmas):
-                tempArray.append(enigmas[indexEnigmas])
+            while i < 5 and indexEnigmas < len(riddle):
+                tempArray.append(riddle[indexEnigmas])
                 indexEnigmas += 1
                 i += 1
             pagination[key] = tempArray

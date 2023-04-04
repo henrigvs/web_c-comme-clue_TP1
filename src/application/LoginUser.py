@@ -1,9 +1,8 @@
 from flask import request, render_template, Blueprint, session, redirect, url_for
 import requests
 
-import app
-
 loginBP = Blueprint('login', __name__)
+PORT = 5000
 
 
 @loginBP.route('/', methods=['GET', 'POST'])
@@ -17,7 +16,7 @@ def loginUser():
             "password": password
         }
 
-        response = requests.put(f'{f"http://localhost:{app.PORT}/users/login"}', json=json)
+        response = requests.put(f"http://localhost:{PORT}/users/login", json=json)
         if response.status_code == 200:
             data = response.json()
             session['userId'] = data['userId']
@@ -63,5 +62,5 @@ def logoutUser():
     session.pop('userEmail', None)
     session.pop('userIsConnected', None)
     jsonUserId = {"userId": userId}
-    requests.put(f"http://localhost:{app.PORT}/users/logout", json=jsonUserId)
+    requests.put(f"http://localhost:{PORT}/users/logout", json=jsonUserId)
     return redirect(url_for('login.loginUser'))

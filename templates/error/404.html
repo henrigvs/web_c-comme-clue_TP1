@@ -1,6 +1,7 @@
-{% extends main.html %}
+{% extends "main.html" %}
+
 {% block body %}
-
-error 404
-
+    <h1>Erreur 404</h1>
+    <p>La page que vous cherchez n'a pas été trouvée.</p>
+    <button class="play-button"><a href="/">Accueil</a></button>
 {% endblock %}

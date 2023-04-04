@@ -1,15 +1,14 @@
 from flask import Blueprint, request, render_template, session
+from src.application.static_methods import JSONToERiddles
 import requests
 
-import app
-from src.application.static_methods import JSONToERiddles
 
 gameBP = Blueprint('game', __name__)
 pointer = 1
 
 
-def getRiddleJSON():    # Retrieve list of riddles from the getAllRiddles endpoint
-    riddlesResponse = requests.get(f"http://localhost:{app.PORT}/riddles/getAllRiddles")
+def getRiddleJSON():  # Retrieve list of riddles from the getAllRiddles endpoint
+    riddlesResponse = requests.get("http://localhost:5000/riddles/getAllRiddles")
     riddles = JSONToERiddles.convertJSONToERiddlesArray(riddlesResponse.json())
     return riddles
 
