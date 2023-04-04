@@ -1,20 +1,19 @@
+from flask import Blueprint, request, render_template, redirect, url_for
 import requests
 
-from flask import Blueprint, request, render_template, redirect, url_for
+import app
 
 editBP = Blueprint('edit', __name__)
 
-apiUrl = 'http://localhost:5000/enigmas'
 
-
-@editBP.route('/<id>', methods=['GET'])
-def editEnigma(id):
-    enigmaData = requests.get(f'{apiUrl}/{id}')
-    if enigmaData.status_code != 200:
+@editBP.route('/<riddleId>', methods=['GET'])
+def editRiddle(riddleId):
+    data = requests.get(f"http://localhost:{app.PORT}/riddles/edit/{riddleId}")
+    if data.status_code != 200:
         return "Error: Unable to fetch data", 500
-    enigma = enigmaData.json()
+    riddle = data.json()
     return render_template('riddles/edit.html'
-                           , enigma=enigma)
+                           , riddle=riddle)
 
 
 @editBP.route('/<id>', methods=['POST'])

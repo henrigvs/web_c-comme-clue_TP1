@@ -12,7 +12,7 @@ perPage = 5
 
 @listBP.route('/', methods=['GET'])
 @listBP.route('/<int:page>', methods=['GET'])
-def list(page=1):
+def getlist(page=1):
     global perPage
 
     if session.get('userIsConnected') is None:
@@ -20,15 +20,15 @@ def list(page=1):
     else:
         userConnected = True
 
-    enigmas = JSONGetter.getEnigmasJSON()
-    enigmasPaginated = Pagination.paginateEnigmas(enigmas, perPage)
-    totalPages = int((len(enigmas) + perPage - 1) / perPage)
+    riddles = JSONGetter.getRiddlesJSON()
+    riddlesPaginated = Pagination.paginateEnigmas(riddles, perPage)
+    totalPages = int((len(riddles) + perPage - 1) / perPage)
 
     if page > totalPages or page < 1:
         return render_template('error/404.html'), 404
 
     return render_template('riddles/list.html'
-                           , enigmas=enigmasPaginated[page]
+                           , riddles=riddlesPaginated[page]
                            , difficultyLevel=None
                            , currentPage=page
                            , totalPages=totalPages

@@ -14,22 +14,22 @@
                 </tr>
             </thead>
             <tbody>
-                {% for enigma in enigmas %}
+                {% for riddle in riddles %}
                     <tr>
-                        <td style="text-align: left; padding-right: 50px">{{ enigma.id }}</td>
-                        <td style="text-align: left; padding-right: 50px">{{ enigma.description }}</td>
-                        <td style="text-align: left; padding-right: 50px">{{ enigma.solution }}</td>
-                        <td><button id="sweetalert" class="btn-list" hint="{{ enigma.hint }}">show hint</button></td>
-                        <td>{{ enigma.difficulty }}</td>
+                        <td style="text-align: left; padding-right: 50px">{{ riddle.riddleId }}</td>
+                        <td style="text-align: left; padding-right: 50px">{{ riddle.description }}</td>
+                        <td style="text-align: left; padding-right: 50px">{{ riddle.solution }}</td>
+                        <td><button id="sweetalert" class="btn-list" clue="{{ riddle.clue }}">show clue</button></td>
+                        <td>{{ riddle.difficulty }}</td>
                         <td>
-                            <button class="btn-modify" onclick="location.href='/edit/{{ enigma.id }}'">Modify</button>
+                            <button class="btn-modify" onclick="location.href='/edit/{{ riddle.riddleId }}'">Modify</button>
                         </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     {% else %}
-        <h2>To be able to see the list of enigmas, you must be logged in</h2>
+        <h2>To be able to see the list of riddles, you must be logged in</h2>
         <div>
             <button class="btn-edit" onclick="location.href='/login'">Login</button>
         </div>
@@ -40,17 +40,17 @@
 {% if userConnected %}
     <div class="pagination">
         {% if currentPage > 1 %}
-            <a href="{{ url_for('list.list', page=currentPage-1) }}">&laquo; Previous</a>
+            <a href="{{ url_for('list.getlist', page=currentPage-1) }}">&laquo; Previous</a>
         {% endif %}
         {% for page in range(1, totalPages+1) %}
             {% if page == currentPage %}
                 <span>{{ page }}</span>
             {% else %}
-                <a href="{{ url_for('list.list', page=page) }}">{{ page }}</a>
+                <a href="{{ url_for('list.getlist', page=page) }}">{{ page }}</a>
             {% endif %}
         {% endfor %}
         {% if currentPage < totalPages %}
-            <a href="{{ url_for('list.list', page=currentPage+1) }}">Next &raquo;</a>
+            <a href="{{ url_for('list.getlist', page=currentPage+1) }}">Next &raquo;</a>
         {% endif %}
     </div>
 {% endif %}

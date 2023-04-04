@@ -1,8 +1,9 @@
 from flask import request, render_template, Blueprint, session, redirect, url_for
 import requests
 
+import app
+
 loginBP = Blueprint('login', __name__)
-endPoint_getUserByEmailAndByPassword = 'http://localhost:5000/users/login'
 
 
 @loginBP.route('/', methods=['GET', 'POST'])
@@ -16,7 +17,7 @@ def loginUser():
             "password": password
         }
 
-        response = requests.post(f'{endPoint_getUserByEmailAndByPassword}', json=json)
+        response = requests.put(f'{f"http://localhost:{app.PORT}/users/login"}', json=json)
         if response.status_code == 200:
             data = response.json()
             session['userId'] = data['userId']
@@ -24,7 +25,7 @@ def loginUser():
             session['userLastName'] = data['lastName']
             session['userEmail'] = data['email']
             session['userIsConnected'] = True
-            return render_template("/login/login.html",
+            return render_template('login/login.html',          # Simplify that !!!
                                    userID=session['userId'],
                                    userName=session['userName'],
                                    userLastName=session['userLastName'],
@@ -45,7 +46,7 @@ def loginUser():
             return render_template('login/login.html', userConnectionStatus=False)
         else:
 
-            return render_template("/login/login.html",
+            return render_template('login/login.html',
                                    userID=userId,
                                    userName=userName,
                                    userLastName=userLastName,
@@ -62,5 +63,5 @@ def logoutUser():
     session.pop('userEmail', None)
     session.pop('userIsConnected', None)
     jsonUserId = {"userId": userId}
-    requests.put(f'http://localhost:5000/users/logout', json=jsonUserId)
+    requests.put(f"http://localhost:{app.PORT}/users/logout", json=jsonUserId)
     return redirect(url_for('login.loginUser'))

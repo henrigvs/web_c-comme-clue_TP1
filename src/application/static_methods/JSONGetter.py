@@ -1,5 +1,6 @@
 import requests
 
+import app
 from src.application.static_methods.JSONToERiddles import convertJSONToERiddlesArray
 
 
@@ -7,6 +8,6 @@ class JSONGetter:
 
     @staticmethod
     def getRiddlesJSON():
-        riddlesResponse = requests.get("http://localhost:5000/enigmas/")
-        enigmas = convertJSONToERiddlesArray(riddlesResponse.json())
-        return enigmas
+        riddlesResponse = requests.get(f"http://localhost:{app.PORT}/riddles/getAllRiddles")
+        riddles = convertJSONToERiddlesArray(riddlesResponse.json())
+        return riddles
