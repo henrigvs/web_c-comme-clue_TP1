@@ -16,7 +16,7 @@ class RiddleServiceTest(unittest.TestCase):
         self.riddleService = RiddleService(self.riddleRepository)
 
     def test_addRiddle(self):
-        createRiddleDTO = CreateRiddleDTO("Test description", "Test solution", "Test clue", 1)
+        createRiddleDTO = CreateRiddleDTO("Test description", "Test solution", "Test clue", 1, "userID1")
         riddleDTO = self.riddleService.addRiddle(createRiddleDTO)
 
         self.assertIsInstance(riddleDTO, RiddleDTO)
@@ -24,10 +24,11 @@ class RiddleServiceTest(unittest.TestCase):
         self.assertEqual(riddleDTO.solution, createRiddleDTO.solution)
         self.assertEqual(riddleDTO.clue, createRiddleDTO.clue)
         self.assertEqual(riddleDTO.difficulty, createRiddleDTO.difficulty)
+        self.assertEqual(riddleDTO.ownerId, createRiddleDTO.ownerId)
 
     def test_deleteRiddle(self):
         # Given
-        createRiddleDTO = CreateRiddleDTO("Test description", "Test solution", "Test clue", 1)
+        createRiddleDTO = CreateRiddleDTO("Test description", "Test solution", "Test clue", 1, "userID1")
         riddleId = self.riddleRepository.addRiddle(self.riddleMapper.toEntity(createRiddleDTO)).riddleId
         assert self.riddleRepository.getRiddleByID(riddleId) is not None
 
@@ -39,11 +40,11 @@ class RiddleServiceTest(unittest.TestCase):
 
     def test_updateRiddle(self):
         # Given
-        riddle = Riddle("Test description", "Test solution", "Test clue", 1)
+        riddle = Riddle("Test description", "Test solution", "Test clue", 1, "userID1")
         riddleId = self.riddleRepository.addRiddle(riddle).riddleId
 
         # When
-        updatingRiddleDTO = CreateRiddleDTO("Updated description", "Updated solution", "Updated clue", 2)
+        updatingRiddleDTO = CreateRiddleDTO("Updated description", "Updated solution", "Updated clue", 2, "userID1")
         updatedRiddleDTO = self.riddleService.editRiddle(updatingRiddleDTO, riddleId)
 
         # Then
@@ -56,8 +57,8 @@ class RiddleServiceTest(unittest.TestCase):
 
     def test_getAllRiddles(self):
         # Given
-        riddle1 = Riddle("Test description 1", "Test solution 1", "Test clue 1", 1)
-        riddle2 = Riddle("Test description 2", "Test solution 2", "Test clue 2", 2)
+        riddle1 = Riddle("Test description 1", "Test solution 1", "Test clue 1", 1, "userID1")
+        riddle2 = Riddle("Test description 2", "Test solution 2", "Test clue 2", 2, "userID1")
         self.riddleRepository.addRiddle(riddle1)
         self.riddleRepository.addRiddle(riddle2)
 
@@ -71,7 +72,7 @@ class RiddleServiceTest(unittest.TestCase):
 
     def test_getRiddleByID(self):
         # Given
-        riddle = Riddle("Test description", "Test solution", "Test clue", 1)
+        riddle = Riddle("Test description", "Test solution", "Test clue", 1, "userID1")
         riddleId = self.riddleRepository.addRiddle(riddle).riddleId
 
         # When

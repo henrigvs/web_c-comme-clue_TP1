@@ -25,7 +25,8 @@ def test_addRiddle(client):
         'description': "What has keys but can't open locks?",
         'solution': "piano",
         'clue': "It's a musical instrument",
-        'difficulty': 1
+        'difficulty': 1,
+        'ownerId': "adminId"
     }
     response = client.post("/riddles/addRiddle", json=data)
     assert response.status_code == 201
@@ -37,7 +38,8 @@ def test_deleteRiddle(client):
         'description': "What has keys but can't open locks?",
         'solution': "piano",
         'clue': "It's a musical instrument",
-        'difficulty': 1
+        'difficulty': 1,
+        'ownerId': "adminId"
     }
     response = client.post("/riddles/addRiddle", json=data)
     riddleId = response.json['riddleId']
@@ -52,7 +54,8 @@ def test_editRiddle(client):
         'description': "What has keys but can't open locks?",
         'solution': "piano",
         'clue': "It's a musical instrument",
-        'difficulty': 1
+        'difficulty': 1,
+        'ownerId': "adminId"
     }
     response = client.post("/riddles/addRiddle", json=data)
     riddleId = response.json['riddleId']
@@ -61,7 +64,8 @@ def test_editRiddle(client):
         'description': "edited",
         'solution': "edited",
         'clue': "edited",
-        'difficulty': 0
+        'difficulty': 0,
+        'ownerId': "adminId"
     }
     response = client.put(f"/riddles/edit/{riddleId}", json=data)
     assert response.status_code == 200
@@ -78,7 +82,8 @@ def test_getAllRiddles(client):
         'description': "What has keys but can't open locks?",
         'solution': "piano",
         'clue': "It's a musical instrument",
-        'difficulty': 1
+        'difficulty': 1,
+        'ownerId': "adminId"
     }
     response = client.post("/riddles/addRiddle", json=data)
     riddleId1 = response.json['riddleId']
@@ -87,7 +92,8 @@ def test_getAllRiddles(client):
         'description': "description 2",
         'solution': "solution 2",
         'clue': "clue 2",
-        'difficulty': 0
+        'difficulty': 0,
+        'ownerId': "adminId"
     }
     response = client.post("/riddles/addRiddle", json=data)
     riddleId2 = response.json['riddleId']
@@ -106,7 +112,8 @@ def test_getRiddleById(client):
         'description': "What has keys but can't open locks?",
         'solution': "piano",
         'clue': "It's a musical instrument",
-        'difficulty': 1
+        'difficulty': 1,
+        'ownerId': "adminId"
     }
     response = client.post("/riddles/addRiddle", json=data)
     riddleId = response.json['riddleId']

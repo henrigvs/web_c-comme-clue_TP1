@@ -21,6 +21,7 @@ class UserService:
                     updatingUserDTO.lastName,
                     updatingUserDTO.password,
                     updatingUserDTO.email,
+                    updatingUserDTO.role,
                     updatingUserDTO.isConnected)
         updatedUser = self.userRepository.editUser(user, updatingUserDTO.userId)
         return self.userMapper.toDTO(updatedUser)

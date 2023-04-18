@@ -22,7 +22,8 @@ class RiddleService:
         riddle = Riddle(createRiddleDTO.description,
                         createRiddleDTO.solution,
                         createRiddleDTO.clue,
-                        createRiddleDTO.difficulty)
+                        createRiddleDTO.difficulty,
+                        createRiddleDTO.ownerId)
         return self.riddleMapper.toDTO(self.riddleRepository.editRiddle(riddle, riddleId))
 
     def getAllRiddle(self) -> List[RiddleDTO]:

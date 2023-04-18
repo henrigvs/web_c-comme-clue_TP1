@@ -1,5 +1,4 @@
 from flask import Flask, render_template
-
 from src.application.LoginUser import loginBP
 from src.application.edit import editBP
 from src.application.game import gameBP

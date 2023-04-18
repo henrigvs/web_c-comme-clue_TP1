@@ -3,6 +3,7 @@ from flask import Blueprint, jsonify, request
 from src.users.api.service.UserService import UserService
 from src.users.api.service.dtos.CreateUserDTO import CreateUserDTO
 from src.users.api.service.dtos.UserDTO import UserDTO
+from src.users.domain.Role import Role
 from src.users.domain.User import User
 from src.users.domain.UserRepository import UserRepository
 
@@ -14,7 +15,7 @@ userRepository = UserRepository()
 userService = UserService(userRepository)
 
 # Create initial data
-userRepository.addUser(User("Henri", "Gevenois", "1234", "henri.gevenois@student.unamur.be", False))
+userRepository.addUser(User("Henri", "Gevenois", "1234", "henri.gevenois@student.unamur.be", Role.ADMIN, False))
 
 
 @userBP.route('/addUser', methods=['POST'])
@@ -24,6 +25,7 @@ def addUser():
                                   data['lastName'],
                                   data['password'],
                                   data['email'],
+                                  _identifyRole(data['role']),
                                   False)
     userDTO = userService.addUser(createUserDTO)
     return _jsonifyUserDTO(userDTO, 201, "email already exists", 400)
@@ -55,6 +57,7 @@ def editUser(user_id):
                               data['lastName'],
                               data['password'],
                               data['email'],
+                              _identifyRole(data['role']),
                               data['isConnected'])
     userDTO = userService.editUser(updatingUserDTO)
     return _jsonifyUserDTO(userDTO, 200, "userId unknown", 404)
@@ -84,3 +87,13 @@ def _jsonifyUserDTO(userDTO: UserDTO, code_ok: int, message_ko: str, code_ko: in
         return jsonify(userDTO.to_dict()), code_ok
     else:
         return jsonify({'success': False, 'message': message_ko}), code_ko
+
+
+def _identifyRole(role: str) -> Role:
+    # identify role
+    if role == "admin":
+        return Role.ADMIN
+    elif role == "player":
+        return Role.PLAYER
+    else:
+        return Role.UNKNOWN
