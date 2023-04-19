@@ -1,50 +1,82 @@
-from typing import Dict, List, Optional
+from typing import List, Optional
 
+from database import db
 from src.users.domain.User import User
+from src.users.domain.UserModel import UserModel
 
 
 class UserRepository:
 
-    def __init__(self) -> None:
-        self.userRepository: Dict[str, User] = {}
-
-    def addUser(self, user: User) -> User:
-        if any(existing_user.email == user.email for existing_user in self.userRepository.values()):
+    @staticmethod
+    def addUser(user: User) -> Optional[User]:
+        # Check if email address is already in db
+        checkExistingEmail = db.session.query(UserModel).filter(UserModel.email == user.email).first()
+        if checkExistingEmail is not None:
             return None
-        self.userRepository[user.userId] = user
+        userModel = UserModel(
+            user_id=user.userId,
+            firstName=user.firstName,
+            lastName=user.lastName,
+            password=user.password,
+            email=user.email,
+            role=user.role.label,           # Important to add label !
+            isConnected=user.isConnected
+        )
+        db.session.add(userModel)
+        db.session.commit()
         return user
 
-    def editUser(self, user: User, userId: str) -> User:
-        if userId not in self.userRepository:
+    @staticmethod
+    def editUser(user: User, userId: str) -> Optional[User]:
+        # check if user exists in DB
+        checkExistingUser = db.session.query(UserModel).filter(UserModel.user_id == userId).first()
+        if checkExistingUser is None:
             return None
 
-        self._updateUserProperties(userId, user)
-        return self.userRepository[userId]
+        db.session.query(UserModel).filter(UserModel.user_id == userId).update(
+            {
+                UserModel.firstName: user.firstName,
+                UserModel.lastName: user.lastName,
+                UserModel.password: user.password,
+                UserModel.email: user.email,
+                UserModel.role: user.role.label,
+                UserModel.isConnected: user.isConnected
+            }
+        )
+        db.session.commit()
+        return user
 
-    def getAllUsers(self) -> List[User]:
-        return list(self.userRepository.values())
+    @staticmethod
+    def getAllUsers() -> List[User]:
+        users = db.session.query(UserModel).all()
+        return [user.toRealUserObject() for user in users] if users else []
 
-    def getUserByUserId(self, userId: str) -> Optional[User]:
-        return self.userRepository.get(userId)
+    @staticmethod
+    def getUserByUserId(userId: str) -> User | None:
+        user = db.session.query(UserModel).filter(UserModel.user_id == userId).first()
+        if user is None:
+            return None
+        else:
+            return user.toRealUserObject()
 
-    def getUserByEmailAndByPassword(self, email: str, password: str) -> Optional[User]:
-        return next(
-            (user for user in self.userRepository.values() if user.email == email and user.password == password), None)
+    @staticmethod
+    def getUserByEmailAndByPassword(email: str, password: str) -> Optional[User]:
+        user = db.session.query(UserModel).filter(
+            UserModel.email == email,
+            UserModel.password == password
+        ).first()
+        if user is None:
+            return None
+        else:
+            return user.toRealUserObject()
 
-    def deleteUserByUserId(self, userId: str) -> User:
-        userToBeDeleted = self.getUserByUserId(userId)
-        if userToBeDeleted is not None:
-            del self.userRepository[userId]
-        return userToBeDeleted
+    @staticmethod
+    def deleteUserByUserId(userId: str) -> Optional[User]:
+        user = db.session.query(UserModel).filter(UserModel.user_id == userId).first()
+        if user is None:
+            return None
+        else:
+            db.session.delete(user)
+            db.session.commit()
+            return user.toRealUserObject()
 
-    def _updateUserProperties(self, userId: str, user: User) -> None:
-        email = user.email
-        if any(existing_user.email == email and existing_user.userId != userId for existing_user in
-               self.userRepository.values()):
-            raise Exception(f"Email {email} already exists in repository")
-
-        self.userRepository[userId].firstName = user.firstName
-        self.userRepository[userId].lastName = user.lastName
-        self.userRepository[userId].password = user.password
-        self.userRepository[userId].email = user.email
-        self.userRepository[userId].isConnected = user.isConnected

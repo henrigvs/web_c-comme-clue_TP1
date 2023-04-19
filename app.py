@@ -1,17 +1,28 @@
+import binascii
+import os
+
 from flask import Flask, render_template
+
+from database.database import init_db
 from src.application.LoginUser import loginBP
 from src.application.edit import editBP
 from src.application.game import gameBP
 from src.application.list import listBP
-from src.Riddles.api.controller.RiddleController import riddleBP
+from src.riddles.api.controller.RiddleController import riddleBP
 from src.users.api.controller.UserController import userBP
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+# Configure and init DB
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database', 'vicious_clue_database.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+init_db(app)
 
 # If change port here, should modify into blueprints
 PORT = 5000
-app.secret_key = "secretKey"
+app.secret_key = binascii.hexlify(os.urandom(24))
 
 app.register_blueprint(gameBP, url_prefix='/game')
 app.register_blueprint(riddleBP, url_prefix='/riddles')

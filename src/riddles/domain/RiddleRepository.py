@@ -1,6 +1,11 @@
 from typing import List, Optional
 
-from src.Riddles.domain.Riddle import Riddle
+from sqlalchemy import update
+
+from database.database import db
+
+from src.riddles.domain.Riddle import Riddle
+from src.riddles.domain.RiddleModel import RiddleModel
 
 
 class RiddleRepository:
@@ -9,28 +14,53 @@ class RiddleRepository:
         self.riddleRepository = {}
 
     def addRiddle(self, riddle: Riddle) -> Riddle:
-        self.riddleRepository[riddle.riddleId] = riddle
+        riddleModel = RiddleModel(
+            riddle_id=riddle.riddleId,
+            description=riddle.description,
+            solution=riddle.solution,
+            clue=riddle.clue,
+            difficulty=riddle.difficulty,
+            fk_ownerId=riddle.ownerId
+        )
+        db.session.add(riddleModel)
+        db.session.commit()
+
         return riddle
 
     def editRiddle(self, riddle: Riddle, riddleId: str) -> Riddle | None:
-        if riddleId not in self.riddleRepository:
+        # Check if riddle exists in database
+        checkExistingRiddle = db.session.query(RiddleModel).filter(RiddleModel.riddle_id == riddleId).first()
+        if checkExistingRiddle is None:
             return None
 
-        self.riddleRepository[riddleId].description = riddle.description
-        self.riddleRepository[riddleId].solution = riddle.solution
-        self.riddleRepository[riddleId].clue = riddle.clue
-        self.riddleRepository[riddleId].difficulty = riddle.difficulty
-
-        return self.riddleRepository[riddleId]
+        db.session.query(RiddleModel).filter(RiddleModel.riddle_id == riddleId).update(
+            {
+                RiddleModel.description: riddle.description,
+                RiddleModel.solution: riddle.solution,
+                RiddleModel.clue: riddle.clue,
+                RiddleModel.difficulty: riddle.difficulty,
+                RiddleModel.fk_ownerId: riddle.ownerId
+            }
+        )
+        db.session.commit()
+        return riddle
 
     def getAllRiddle(self) -> List[Riddle]:
-        return list(self.riddleRepository.values())
+        riddles = db.session.query(RiddleModel).all()
+        return [riddle.to_realRiddleObject() for riddle in riddles] if riddles else []
 
-    def getRiddleByID(self, riddleId: str) -> Optional[Riddle]:
-        return self.riddleRepository.get(riddleId)
+    def getRiddleByID(self, riddleId: str) -> Riddle | None:
+        riddle = db.session.query(RiddleModel).filter(RiddleModel.riddle_id == riddleId).first()
+        return riddle.to_realRiddleObject() if riddle else None
 
-    def deleteRiddle(self, riddleId: str) -> Riddle:
-        riddleToBeDeleted = self.getRiddleByID(riddleId)
-        if riddleToBeDeleted is not None:
-            del self.riddleRepository[riddleId]
-        return riddleToBeDeleted
+    def deleteRiddle(self, riddleId: str) -> Optional[Riddle]:
+        riddle = db.session.query(RiddleModel).filter(RiddleModel.riddle_id == riddleId).first()
+        if riddle is not None:
+            db.session.delete(riddle)
+            db.session.commit()
+            return riddle.to_realRiddleObject()
+        return None
+
+    def getAllRiddlesOfAnOwner(self, ownerId: str) -> List[Riddle]:
+        riddles = db.session.query(RiddleModel).filter(RiddleModel.fk_ownerId == ownerId)
+        return [riddle.to_realRiddleObject() for riddle in riddles] if riddles else []

@@ -4,7 +4,6 @@ from src.users.api.service.UserService import UserService
 from src.users.api.service.dtos.CreateUserDTO import CreateUserDTO
 from src.users.api.service.dtos.UserDTO import UserDTO
 from src.users.domain.Role import Role
-from src.users.domain.User import User
 from src.users.domain.UserRepository import UserRepository
 
 # BluePrint
@@ -13,10 +12,6 @@ userBP = Blueprint('users', __name__)
 # Initializing service
 userRepository = UserRepository()
 userService = UserService(userRepository)
-
-# Create initial data
-userRepository.addUser(User("Henri", "Gevenois", "1234", "henri.gevenois@student.unamur.be", Role.ADMIN, False))
-
 
 @userBP.route('/addUser', methods=['POST'])
 def addUser():
@@ -80,6 +75,12 @@ def disconnectAnUserByUserId():
     userDTO.disconnect()
     updatedUserDTO = userService.editUser(userDTO)
     return _jsonifyUserDTO(updatedUserDTO, 200, "userId unknown", 404)
+
+@userBP.route('/delete/<userId>', methods=['DELETE'])
+def deleteUser():
+    userId = request.get_json()['userId']
+    userDTO = userService.deleteUserByUserId(userId)
+    return _jsonifyUserDTO(userDTO, 200, "userId unknown", 404)
 
 
 def _jsonifyUserDTO(userDTO: UserDTO, code_ok: int, message_ko: str, code_ko: int):

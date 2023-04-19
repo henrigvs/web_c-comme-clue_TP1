@@ -8,7 +8,8 @@ def convertJSONToERiddlesArray(jsonData) -> []:
             "description": data["description"],
             "clue": data["clue"],
             "solution": data["solution"],
-            "difficulty": data["difficulty"]
+            "difficulty": data["difficulty"],
+            "ownerId": data["ownerId"]
         }
         riddles.append(riddle)
     return riddles
