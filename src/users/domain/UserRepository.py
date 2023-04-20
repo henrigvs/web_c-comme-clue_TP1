@@ -1,5 +1,7 @@
 from typing import List, Optional
 
+from werkzeug.security import check_password_hash
+
 from database import db
 from src.users.domain.User import User
 from src.users.domain.UserModel import UserModel
@@ -62,13 +64,34 @@ class UserRepository:
     @staticmethod
     def getUserByEmailAndByPassword(email: str, password: str) -> Optional[User]:
         user = db.session.query(UserModel).filter(
-            UserModel.email == email,
-            UserModel.password == password
+            UserModel.email == email
         ).first()
         if user is None:
             return None
         else:
-            return user.toRealUserObject()
+            # Use check_password_hash to compare the stored hashed password with the provided plaintext password
+            if check_password_hash(user.password, password):
+                return user.toRealUserObject()
+            else:
+                return None
+
+    @staticmethod
+    def connectUser(userId: str) -> Optional[User]:
+        user = UserRepository.getUserByUserId(userId)
+        if user is None:
+            return None
+        db.session.query(UserModel).filter(UserModel.user_id == userId).update({UserModel.isConnected: True})
+        db.session.commit()
+        return UserRepository.getUserByUserId(userId)
+
+    @staticmethod
+    def disconnectUser(userId: str) -> Optional[User]:
+        user = UserRepository.getUserByUserId(userId)
+        if user is None:
+            return None
+        db.session.query(UserModel).filter(UserModel.user_id == userId).update({UserModel.isConnected: False})
+        db.session.commit()
+        return UserRepository.getUserByUserId(userId)
 
     @staticmethod
     def deleteUserByUserId(userId: str) -> Optional[User]:

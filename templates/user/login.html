@@ -3,9 +3,14 @@
 
 
 {% if userConnectionStatus %}
-    <h1>Login page </h1>
-    <h1>Welcome {{ userName }} !</h1>
+    <h1>Welcome !</h1>
+    <h2>Your firstname: {{ userName }}</h2>
+    <h2>Your lastname: {{ userLastName }}</h2>
+    <h2>Your e-mail address: {{ userEmail }}</h2>
+    <h2>Your role: {{ userRole }}</h2>
+    <h2> _________________________________ </h2>
     <h2>You are logged in</h2>
+    <button class="play-button"><a href="#">Create riddle</a></button>
 
     <form action="{{ url_for('login.logoutUser') }}" method="POST" style="display: flex; flex-direction: column">
         <button class="btn-confirmation-edit" type="submit">Logout</button>
@@ -22,6 +27,9 @@
 
         <button class="btn-confirmation-edit" type="submit">Confirm</button>
     </form>
+
+    <h1>You don't have an account yet?</h1>
+    <button class="play-button"><a href="/signUp">Sign up</a></button>
     {% if errorMessage %}
         <p>{{ errorMessage }}</p>
     {% endif %}

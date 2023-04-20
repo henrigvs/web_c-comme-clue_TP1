@@ -4,12 +4,13 @@ import os
 from flask import Flask, render_template
 
 from database.database import init_db
-from src.application.LoginUser import loginBP
+from src.application.users_login.LoginUser import loginBP
 from src.application.edit import editBP
 from src.application.game import gameBP
-from src.application.list import listBP
+from src.application.List import listBP
 from src.riddles.api.controller.RiddleController import riddleBP
 from src.users.api.controller.UserController import userBP
+from src.application.users_login.SignUpUser import signUpBP
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -30,6 +31,7 @@ app.register_blueprint(listBP, url_prefix='/list')
 app.register_blueprint(editBP, url_prefix='/edit')
 app.register_blueprint(loginBP, url_prefix='/login')
 app.register_blueprint(userBP, url_prefix='/users')
+app.register_blueprint(signUpBP, url_prefix='/signUp')
 
 
 @app.errorhandler(404)

@@ -2,40 +2,32 @@
 
 {% block body %}
 <h1>Enigmas List</h1>
-    {% if userConnected %}
-        <table width="70%">
-            <thead>
+    <table width="70%">
+        <thead>
+            <tr>
+                <th>Riddle</th>
+                <th>Solution</th>
+                <th>Clue</th>
+                <th>Difficulty</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for riddle in riddles %}
                 <tr>
-                    <th>Riddle</th>
-                    <th>Solution</th>
-                    <th>Clue</th>
-                    <th>Difficulty</th>
+                    <td style="text-align: left; padding-right: 50px">{{ riddle.description }}</td>
+                    <td><button id="sweetalert" class="btn-solution" solution="{{ riddle.solution}}">show solution</button></td>
+                    <td><button id="sweetalert" class="btn-list" clue="{{ riddle.clue }}">show clue</button></td>
+                    <td>{{ riddle.difficulty }}</td>
+                    <td>
+                        <button class="btn-modify" onclick="location.href='/edit/{{ riddle.riddleId }}'">Modify</button>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                {% for riddle in riddles %}
-                    <tr>
-                        <td style="text-align: left; padding-right: 50px">{{ riddle.description }}</td>
-                        <td><button id="sweetalert" class="btn-solution" solution="{{ riddle.solution}}">show solution</button></td>
-                        <td><button id="sweetalert" class="btn-list" clue="{{ riddle.clue }}">show clue</button></td>
-                        <td>{{ riddle.difficulty }}</td>
-                        <td>
-                            <button class="btn-modify" onclick="location.href='/edit/{{ riddle.riddleId }}'">Modify</button>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <h2>To be able to see the list of riddles, you must be logged in</h2>
-        <div>
-            <button class="btn-edit" onclick="location.href='/login'">Login</button>
-        </div>
-    {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
 
 {% block footer %}
-{% if userConnected %}
     <div class="pagination">
         {% if currentPage > 1 %}
             <a href="{{ url_for('list.getList', page=currentPage-1) }}">&laquo; Previous</a>
@@ -51,7 +43,6 @@
             <a href="{{ url_for('list.getList', page=currentPage+1) }}">Next &raquo;</a>
         {% endif %}
     </div>
-{% endif %}
 {% endblock %}
 
 

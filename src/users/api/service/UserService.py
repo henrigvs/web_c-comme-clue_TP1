@@ -38,6 +38,14 @@ class UserService:
         user = self.userRepository.getUserByEmailAndByPassword(email, password)
         return self.userMapper.toDTO(user)
 
+    def connectUser(self, userId: str):
+        user = self.userRepository.connectUser(userId)
+        return self.userMapper.toDTO(user)
+
+    def disconnectUser(self, userId: str):
+        user = self.userRepository.disconnectUser(userId)
+        return self.userMapper.toDTO(user)
+
     def deleteUserByUserId(self, userId: str) -> UserDTO:
         deletedUser = self.userRepository.deleteUserByUserId(userId)
         return self.userMapper.toDTO(deletedUser)

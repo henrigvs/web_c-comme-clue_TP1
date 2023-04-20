@@ -13,6 +13,7 @@ userBP = Blueprint('users', __name__)
 userRepository = UserRepository()
 userService = UserService(userRepository)
 
+
 @userBP.route('/addUser', methods=['POST'])
 def addUser():
     data = request.get_json()
@@ -63,18 +64,18 @@ def connectAnUserByEmailAndPassword():
     data = request.get_json()
     email, password = data['email'], data['password']
     userDTO = userService.getUserByEmailAndByPassword(email, password)
-    userDTO.connect()
-    updatedUserDTO = userService.editUser(userDTO)
-    return _jsonifyUserDTO(updatedUserDTO, 200, "Wrong email or password", 400)
+    # Call the connect method of
+    userDTO = userService.connectUser(userDTO.userId)
+    return _jsonifyUserDTO(userDTO, 200, "Wrong email or password", 400)
 
 
 @userBP.route('/logout', methods=['PUT'])
 def disconnectAnUserByUserId():
     userId = request.get_json()['userId']
     userDTO = userService.getUserByUserId(userId)
-    userDTO.disconnect()
-    updatedUserDTO = userService.editUser(userDTO)
+    updatedUserDTO = userService.disconnectUser(userDTO.userId)
     return _jsonifyUserDTO(updatedUserDTO, 200, "userId unknown", 404)
+
 
 @userBP.route('/delete/<userId>', methods=['DELETE'])
 def deleteUser():

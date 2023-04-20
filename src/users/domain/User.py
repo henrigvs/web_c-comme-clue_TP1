@@ -1,11 +1,9 @@
 import uuid
 
-from flask_login import UserMixin
-
 from src.users.domain import Role
 
 
-class User(UserMixin):
+class User:
 
     def __init__(self, firstName: str, lastName: str, password: str, email: str, role: Role, isConnected=False, userId: str = None):
         self.userId = userId if userId else str(uuid.uuid4())
@@ -16,20 +14,8 @@ class User(UserMixin):
         self.role = role
         self.isConnected = isConnected
 
-    @property
-    def is_active(self):
-        return True
-
-    @property
-    def is_authenticated(self):
-        return self.isConnected
-
-    @property
-    def is_anonymous(self):
-        return not self.isConnected
-
     def __repr__(self) -> str:
-        return self.userId + " - " + self.firstName + " - " + self.lastName + " - " + self.password + " - " + self.email + " - " + self.role.label
+        return self.userId + " - " + self.firstName + " - " + self.lastName + " - " + self.password + " - " + self.email + " - " + self.role.label + " - " + self.isConnected.__repr__()
 
     def __eq__(self, o: object) -> bool:
         if not isinstance(o, User):

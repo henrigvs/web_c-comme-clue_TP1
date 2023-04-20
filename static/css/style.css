@@ -398,3 +398,35 @@ footer {
   display: flex;
   align-items: center;
 }
+
+.form-row{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+label{
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"]{
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.errors {
+    margin-top: 5px;
+    padding: 10px;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    font-size: 14px;
+    list-style-type: none;
+}
