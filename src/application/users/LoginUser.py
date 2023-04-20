@@ -1,7 +1,7 @@
 from flask import request, render_template, Blueprint, session, redirect, url_for
 import requests
 
-from src.application.users_login.ConnectUserInSession import ConnectUserInSession
+from src.application.users.ConnectUserInSession import ConnectUserInSession
 
 loginBP = Blueprint('login', __name__)
 PORT = 5000

@@ -3,7 +3,7 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, Email, Regexp, EqualTo
 
 
-class SignInForm(FlaskForm):
+class SignUpForm(FlaskForm):
     firstName = StringField("Firstname", validators=[
         InputRequired(),
         Regexp(r'^[A-Za-z\s\-]+$', message="The firstname must contain only letters, spaces and '-'"),

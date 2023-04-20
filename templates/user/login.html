@@ -10,7 +10,7 @@
     <h2>Your role: {{ userRole }}</h2>
     <h2> _________________________________ </h2>
     <h2>You are logged in</h2>
-    <button class="play-button"><a href="#">Create riddle</a></button>
+    <button class="play-button"><a href="/createRiddle">Create riddle</a></button>
 
     <form action="{{ url_for('login.logoutUser') }}" method="POST" style="display: flex; flex-direction: column">
         <button class="btn-confirmation-edit" type="submit">Logout</button>

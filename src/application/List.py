@@ -8,7 +8,6 @@ from flask import Blueprint, render_template, session, redirect, url_for
 
 listBP = Blueprint('list', __name__)
 PORT = 5000
-difficultyLevel = 0
 enigmasByPage = 5
 currentPage = 0
 perPage = 5
@@ -33,7 +32,6 @@ def getList(page=1):
 
         return render_template('riddles/list.html'
                                , riddles=riddlesPaginated[page]
-                               , difficultyLevel=None
                                , currentPage=page
                                , totalPages=totalPages)
 

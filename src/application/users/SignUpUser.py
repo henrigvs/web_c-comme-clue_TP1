@@ -1,8 +1,8 @@
 import requests
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template
 from werkzeug.security import generate_password_hash
 
-from src.application.form.UserForm import SignInForm
+from src.application.form.UserForm import SignUpForm
 
 signUpBP = Blueprint('signUp', __name__)
 PORT = 5000
@@ -10,7 +10,7 @@ PORT = 5000
 
 @signUpBP.route('/', methods=['GET', 'POST'])
 def signUpUser():
-    form = SignInForm()
+    form = SignUpForm()
 
     if form.validate_on_submit():
         firstName = form.firstName.data

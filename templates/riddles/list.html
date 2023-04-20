@@ -1,10 +1,13 @@
 {% extends "main.html" %}
 
 {% block body %}
-<h1>Enigmas List</h1>
+<h1>Riddles List</h1>
     <table width="70%">
         <thead>
             <tr>
+                {% if session['userRole'] == "admin" %}
+                    <th>Owner</th>
+                {% endif %}
                 <th>Riddle</th>
                 <th>Solution</th>
                 <th>Clue</th>
@@ -14,6 +17,9 @@
         <tbody>
             {% for riddle in riddles %}
                 <tr>
+                    {% if session['userRole'] == "admin" %}
+                        <td style="text-align: left; padding-right: 50px">{{ riddle.ownerId }}</td>
+                    {% endif %}
                     <td style="text-align: left; padding-right: 50px">{{ riddle.description }}</td>
                     <td><button id="sweetalert" class="btn-solution" solution="{{ riddle.solution}}">show solution</button></td>
                     <td><button id="sweetalert" class="btn-list" clue="{{ riddle.clue }}">show clue</button></td>

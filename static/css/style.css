@@ -43,6 +43,10 @@ header {
   list-style: none;
 }
 
+.menu-welcome{
+  margin-right: 20px;
+}
+
 .menu-play{
   margin-right: 20px;
 }
