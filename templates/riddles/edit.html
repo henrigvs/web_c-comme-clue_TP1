@@ -7,13 +7,13 @@
     {% endif %}
     <form action="{{ url_for('edit.editRiddle', riddleId=riddle.riddleId) }}" method="POST" style="display: flex; flex-direction: column;">
         <p class="attribute">Description</p>
-        <input class="new-value" type="text" id="description" name="description" value="{{ riddle.description }}" required>
+        <input class="riddle-new-input" type="text" id="description" name="description" value="{{ riddle.description }}" required>
 
         <p class="attribute">Solution</p>
-        <input class="new-value" type="text" id="solution" name="solution" value="{{ riddle.solution }}" required>
+        <input class="riddle-new-input" type="text" id="solution" name="solution" value="{{ riddle.solution }}" required>
 
         <p class="attribute">Hint</p>
-        <input class="new-value" type="text" id="clue" name="clue" value="{{ riddle.clue }}" required>
+        <input class="riddle-new-input" type="text" id="clue" name="clue" value="{{ riddle.clue }}" required>
 
         <p class="attribute">Difficulty Level</p>
         <div class="custom-number-input">

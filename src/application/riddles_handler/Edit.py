@@ -13,11 +13,15 @@ def editRiddle(riddleId):
         clue = request.form['clue']
         difficulty = request.form['difficulty']
 
+        # Retrieve the owner Id from DB
+        ownerId = requests.get(f"http://localhost:{PORT}/riddles/riddle/{riddleId}").json()['ownerId']
+
         json = {
             'description': description,
             'solution': solution,
             'clue': clue,
-            'difficulty': int(difficulty)
+            'difficulty': int(difficulty),
+            'ownerId': ownerId
         }
 
         try:

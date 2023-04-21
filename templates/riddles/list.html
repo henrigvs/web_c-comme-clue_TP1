@@ -2,7 +2,8 @@
 
 {% block body %}
 <h1>Riddles List</h1>
-    <table width="70%">
+<h2 style="margin-bottom: 25px">______________________________</h2>
+    <table class="center-aligned">
         <thead>
             <tr>
                 {% if session['userRole'] == "admin" %}
@@ -18,19 +19,20 @@
             {% for riddle in riddles %}
                 <tr>
                     {% if session['userRole'] == "admin" %}
-                        <td style="text-align: left; padding-right: 50px">{{ riddle.ownerId }}</td>
+                        <td><a href="{{ url_for('UserManagement.userDetails', playerId=riddle.ownerId) }}">{{ riddle.ownerId }}</a></td>
                     {% endif %}
-                    <td style="text-align: left; padding-right: 50px">{{ riddle.description }}</td>
+                    <td>{{ riddle.description }}</td>
                     <td><button id="sweetalert" class="btn-solution" solution="{{ riddle.solution}}">show solution</button></td>
                     <td><button id="sweetalert" class="btn-list" clue="{{ riddle.clue }}">show clue</button></td>
                     <td>{{ riddle.difficulty }}</td>
                     <td>
-                        <button class="btn-modify" onclick="location.href='/edit/{{ riddle.riddleId }}'">Modify</button>
+                        <button class="btn-modify" onclick="location.href='/edit/{{ riddle.riddleId }}'">Edit</button>
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+<h2>______________________________</h2>
 {% endblock %}
 
 {% block footer %}

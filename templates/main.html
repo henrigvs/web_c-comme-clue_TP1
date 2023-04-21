@@ -4,14 +4,14 @@
     <title>Escape Game</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   </head>
 
   <body>
     <header>
         <div class="logo">
-          <a class="logo" href="/"><img src="../static/img/logo.png" alt="Logo"></a>
+          <a class="logo" href="/"><img src="{{ url_for('static', filename='img/logo2.png') }}" alt="Logo"></a>
         </div>
         <div class="menu">
           <ul>
@@ -42,8 +42,8 @@
 
         <p>&copy; 2023 Vicious clue. All rights reserved.</p>
     </footer>
-    <script src="/static/js/game.js"></script>
-    <script src="/static/js/list.js"></script>
-    <script src="/static/js/edit.js"></script>
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/list.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/edit.js') }}"></script>
   </body>
 </html>

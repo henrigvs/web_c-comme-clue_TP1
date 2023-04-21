@@ -45,7 +45,7 @@ def deleteUserByUserId(userId):
     return _jsonifyUserDTO(userDTO, 200, "userId unknown", 404)
 
 
-@userBP.route('/<user_id>', methods=['PUT'])
+@userBP.route('/edit/<user_id>', methods=['PUT'])
 def editUser(user_id):
     data = request.get_json()
     updatingUserDTO = UserDTO(user_id,
@@ -65,7 +65,8 @@ def connectAnUserByEmailAndPassword():
     email, password = data['email'], data['password']
     userDTO = userService.getUserByEmailAndByPassword(email, password)
     # Call the connect method of
-    userDTO = userService.connectUser(userDTO.userId)
+    if userDTO is not None:
+        userDTO = userService.connectUser(userDTO.userId)
     return _jsonifyUserDTO(userDTO, 200, "Wrong email or password", 400)
 
 

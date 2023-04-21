@@ -1,6 +1,7 @@
 from flask import request, render_template, Blueprint, session, redirect, url_for
 import requests
 
+from src.application.form.UserForm import loginForm
 from src.application.users.ConnectUserInSession import ConnectUserInSession
 
 loginBP = Blueprint('login', __name__)
@@ -9,9 +10,10 @@ PORT = 5000
 
 @loginBP.route('/', methods=['GET', 'POST'])
 def loginUser():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
+    form = loginForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
 
         json = {
             "email": email,
@@ -30,8 +32,9 @@ def loginUser():
                                    userRole=session['userRole'],
                                    userConnectionStatus=session['userIsConnected'])
         else:
-            errorMessage = "Error during login, please contact your system administrator"
-            return render_template('user/login.html', errorMessage=errorMessage, userConnectionStatus=False)
+            data = response.json()
+            errorMessage = data['message']
+            return render_template('user/login.html', errorMessage=errorMessage, userConnectionStatus=False, form=form)
 
     else:
         userId = session.get('userId')
@@ -42,9 +45,8 @@ def loginUser():
         userIsConnected = session.get('userIsConnected')
 
         if userId is None:
-            return render_template('user/login.html', userConnectionStatus=False)
+            return render_template('user/login.html', userConnectionStatus=False, form=form)
         else:
-
             return render_template('user/login.html',
                                    userID=userId,
                                    userName=userName,
@@ -57,12 +59,7 @@ def loginUser():
 @loginBP.route('/logout', methods=['POST'])
 def logoutUser():
     userId = session.get('userId')
-    session.pop('userId', None)
-    session.pop('userName', None)
-    session.pop('userLastName', None)
-    session.pop('userEmail', None)
-    session.pop('userRole', None)
-    session.pop('userIsConnected', None)
+    ConnectUserInSession.disconnectUser()
     jsonUserId = {"userId": userId}
     requests.put(f"http://localhost:{PORT}/users/logout", json=jsonUserId)
     return redirect(url_for('login.loginUser'))

@@ -28,7 +28,7 @@
         {% endwith %}
     </div>
     <div class="form-row my-2">
-        {{ form.email.label }} {{ form.email(size=16, class='new-value') }}
+        {{ form.email.label }} {{ form.email(size=50, class='new-value') }}
         {% with errors = form.email.errors %}
             {% if errors %}
                 <ul class="errors">
@@ -40,7 +40,7 @@
         {% endwith %}
     </div>
     <div class="form-row my-2">
-        {{ form.confirmEmail.label }} {{ form.confirmEmail(size=16, class='new-value') }}
+        {{ form.confirmEmail.label }} {{ form.confirmEmail(size=50, class='new-value') }}
         {% with errors = form.confirmEmail.errors %}
             {% if errors %}
                 <ul class="errors">
@@ -52,7 +52,7 @@
         {% endwith %}
     </div>
     <div class="form-row my-2">
-        {{ form.password.label }} {{ form.password(size=16, class='new-value') }}
+        {{ form.password.label }} {{ form.password(size=25, class='new-value') }}
         {% with errors = form.password.errors %}
             {% if errors %}
                 <ul class="errors">

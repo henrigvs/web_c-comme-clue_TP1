@@ -1,17 +1,18 @@
-/* Reset some default browser styles */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* Set some global styles */
 body {
   font-family: Arial, sans-serif;
   font-size: 16px;
   line-height: 1.5;
   background-color: #5f6774;
   color: #333;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 header {
@@ -26,7 +27,7 @@ header {
 }
 
 .logo a img {
-  max-width: 200px;
+  max-width: 300px;
 }
 
 .menu{
@@ -78,12 +79,14 @@ header {
 
 main {
   padding: 40px;
+  margin-bottom: 25px;
   min-height: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   color: blanchedalmond;
+  flex: 1;
 }
 
 .play-button{
@@ -118,6 +121,11 @@ main {
 .play-button a{
   text-decoration: None;
   color: inherit;
+}
+
+.center-aligned th,
+.center-aligned td{
+  text-align: center;
 }
 
 h1{
@@ -370,8 +378,6 @@ footer {
   padding: 20px;
   background-color: blanchedalmond;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-  position: absolute;
-  bottom: 0;
   width: 100%;
 }
 
